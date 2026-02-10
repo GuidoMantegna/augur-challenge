@@ -10,12 +10,11 @@
  * Good luck!
  */
 
+import Dashboard from "./components/Dashboard";
+
 function App() {
   return (
-    <div>
-      <h1>Threat Intelligence Dashboard</h1>
-      <p>Start building here. Check the design reference and README for details.</p>
-    </div>
+    <Dashboard />
   );
 }
 
