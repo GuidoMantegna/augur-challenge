@@ -1,6 +1,11 @@
 import React from 'react';
+import { useIndicators } from '../hooks/useIndicators';
+import { useStats } from '../hooks/useStats';
 
 const Dashboard: React.FC = () => {
+  const {indicators, error, loading, severities} = useIndicators();
+  const {stats, error: statsError, loading: statsLoading} = useStats();
+
   return (
     <div className="app-layout">
       {/* SIDEBAR */}
@@ -97,11 +102,11 @@ const Dashboard: React.FC = () => {
 
         {/* Stats Row */}
         <div className="stats-row">
-          <StatCard label="Total Indicators" value="2,847" sub="↑ 12% from last week" type="total" icon />
-          <StatCard label="Critical" value="342" sub="Requires immediate action" type="critical" />
-          <StatCard label="High" value="798" sub="Active monitoring" type="high" />
-          <StatCard label="Medium" value="1,139" sub="Under review" type="medium" />
-          <StatCard label="Low" value="568" sub="Informational" type="low" />
+          <StatCard label="Total Indicators" value={stats.total} sub="↑ 12% from last week" type="total" icon />
+          <StatCard label="Critical" value={stats.critical} sub="Requires immediate action" type="critical" />
+          <StatCard label="High" value={stats.high} sub="Active monitoring" type="high" />
+          <StatCard label="Medium" value={stats.medium} sub="Under review" type="medium" />
+          <StatCard label="Low" value={stats.low} sub="Informational" type="low" />
         </div>
 
         {/* Toolbar */}
@@ -204,7 +209,7 @@ const Dashboard: React.FC = () => {
 // Sub-components for cleaner JSX
 interface StatCardProps {
   label: string;
-  value: string;
+  value: number;
   sub?: string;
   type?: string;
   icon?: boolean;
