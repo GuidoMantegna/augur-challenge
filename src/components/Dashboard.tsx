@@ -1,6 +1,7 @@
 import React from 'react';
 import { useIndicators } from '../hooks/useIndicators';
 import { useStats } from '../hooks/useStats';
+import  TableRow from './TableRow';
 
 const Dashboard: React.FC = () => {
   const {indicators, error, loading, severities} = useIndicators();
@@ -154,17 +155,7 @@ const Dashboard: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <TableRow 
-                    indicator="185.220.101.34" 
-                    type="⬡ IP" 
-                    severity="Critical" 
-                    confidence={94} 
-                    source="AbuseIPDB" 
-                    tags={['tor-exit', 'botnet']} 
-                    time="2 min ago" 
-                    selected 
-                  />
-                  {/* Additional rows would follow same pattern */}
+                  {indicators.data.map(row => <TableRow key={row.id} selected={false} {...row} />)}
                 </tbody>
               </table>
             </div>
@@ -228,39 +219,6 @@ const StatCard: React.FC<StatCardProps> = ({ label, value, sub, type, icon }) =>
     <div className="stat-card-sub">{sub}</div>
   </div>
 );
-
-interface TableRowProps {
-  indicator: string;
-  type: string;
-  severity: string;
-  confidence: number;
-  source: string;
-  tags: string[];
-  time: string;
-  selected: boolean;
-}
-const TableRow: React.FC<TableRowProps> = ({ indicator, type, severity, confidence, source, tags, time, selected }) => (
-  <tr className={selected ? 'selected' : ''}>
-    <td><input type="checkbox" defaultChecked={selected} style={{ accentColor: 'var(--augur-blue)' }} /></td>
-    <td className="td-indicator">{indicator}</td>
-    <td><span className="td-type">{type}</span></td>
-    <td><span className={`badge badge-${severity.toLowerCase()}`}>{severity}</span></td>
-    <td>
-      <div className="td-confidence">
-        <div className="confidence-bar">
-          <div className="confidence-bar-fill" style={{ width: `${confidence}%`, background: `var(--severity-${severity.toLowerCase()})` }}></div>
-        </div>
-        <span className="confidence-value" style={{ color: `var(--severity-${severity.toLowerCase()})` }}>{confidence}</span>
-      </div>
-    </td>
-    <td className="td-source">{source}</td>
-    <td className="td-tags">
-      {tags.map(tag => <span key={tag} className="tag tag-red">{tag}</span>)}
-    </td>
-    <td className="td-time">{time}</td>
-  </tr>
-);
-
 interface DetailSectionProps {
   label: string;
   value: string;
