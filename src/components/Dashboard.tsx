@@ -8,19 +8,16 @@ import Toolbar from './Toolbar';
 const INITIAL_FILTERS = {
   search: '',
   severity: '',
+  source: '',
   type: '',
   page: 1,
   limit: 10
 }
 
 const Dashboard: React.FC = () => {
-  const {indicators, error, loading, severities} = useIndicators();
-  const {stats, error: statsError, loading: statsLoading} = useStats();
-  const { fetchFilters } = useFilters(INITIAL_FILTERS);
-
-  // const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   console.log(event.target.value);
-  // };
+  // const {error, loading, severities} = useIndicators();
+  const {stats } = useStats();
+  const { handleFilterChange, data } = useFilters(INITIAL_FILTERS);
 
   return (
     <div className="app-layout">
@@ -126,7 +123,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Toolbar */}
-        <Toolbar handleFilterChange={fetchFilters}/>
+        <Toolbar handleFilterChange={handleFilterChange}/>
 
         <div style={{ display: 'flex', flex: 1 }}>
           <div className="content-area">
@@ -145,7 +142,7 @@ const Dashboard: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {indicators.data.map(row => <TableRow key={row.id} selected={false} {...row} />)}
+                  {data.data.map(row => <TableRow key={row.id} selected={false} {...row} />)}
                 </tbody>
               </table>
             </div>

@@ -1,14 +1,14 @@
 import { useState, useEffect, useMemo } from "react";
-import { Indicator } from "../types/indicator";
+import { Indicator, PaginatedResponse } from "../types/indicator";
 
-interface indicatorsResponse {
-    data: Indicator[];
-    total: number;
-    page: number;
-    totalPages: number;
-}
+// interface indicatorsResponse {
+//     data: Indicator[];
+//     total: number;
+//     page: number;
+//     totalPages: number;
+// }
 
-const INITIAL_INDICATORS: indicatorsResponse = {
+export const INITIAL_INDICATORS: PaginatedResponse<Indicator> = {
     data: [],
     total: 0,
     page: 0,
@@ -17,7 +17,7 @@ const INITIAL_INDICATORS: indicatorsResponse = {
 const SEVERITIES_OPTIONS = ["critical", "high", "medium", "low"];
 
 export const useIndicators = () => {
-    const [indicators, setIndicators] = useState<indicatorsResponse>(INITIAL_INDICATORS);
+    const [indicators, setIndicators] = useState<PaginatedResponse<Indicator>>(INITIAL_INDICATORS);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
