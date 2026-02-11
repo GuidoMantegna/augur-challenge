@@ -1,11 +1,26 @@
 import React from 'react';
 import { useIndicators } from '../hooks/useIndicators';
 import { useStats } from '../hooks/useStats';
+import { useFilters } from '../hooks/useFilters';
 import  TableRow from './TableRow';
+import Toolbar from './Toolbar';
+
+const INITIAL_FILTERS = {
+  search: '',
+  severity: '',
+  type: '',
+  page: 1,
+  limit: 10
+}
 
 const Dashboard: React.FC = () => {
   const {indicators, error, loading, severities} = useIndicators();
   const {stats, error: statsError, loading: statsLoading} = useStats();
+  const { fetchFilters } = useFilters(INITIAL_FILTERS);
+
+  // const handleFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   console.log(event.target.value);
+  // };
 
   return (
     <div className="app-layout">
@@ -111,32 +126,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         {/* Toolbar */}
-        <div className="toolbar">
-          <div className="input-with-icon" style={{ width: '260px' }}>
-            <svg className="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input className="input" type="text" placeholder="Search indicators..." />
-          </div>
-          <div className="toolbar-divider"></div>
-          <div className="toolbar-group">
-            <select className="select">
-              <option>All Severities</option>
-              <option>Critical</option>
-            </select>
-            <select className="select">
-              <option>All Types</option>
-              <option>IP Address</option>
-            </select>
-            <select className="select">
-              <option>All Sources</option>
-              <option>AbuseIPDB</option>
-            </select>
-          </div>
-          <div style={{ marginLeft: 'auto' }}>
-            <button className="btn btn-ghost btn-sm">Clear filters</button>
-          </div>
-        </div>
+        <Toolbar handleFilterChange={fetchFilters}/>
 
         <div style={{ display: 'flex', flex: 1 }}>
           <div className="content-area">
