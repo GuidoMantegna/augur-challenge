@@ -1,5 +1,4 @@
 import React from "react";
-import { useIndicators } from "../hooks/useIndicators";
 import { useStats } from "../hooks/useStats";
 import { useFilters } from "../hooks/useFilters";
 import TableRow from "./TableRow";
@@ -7,7 +6,6 @@ import Toolbar from "./Toolbar";
 import Pagination from "./Pagination";
 
 const Dashboard: React.FC = () => {
-  // const {error, loading, severities} = useIndicators();
   const { stats } = useStats();
   const {
     handleFilterChange,
@@ -15,6 +13,7 @@ const Dashboard: React.FC = () => {
     clearFilters,
     filters,
     handlePaginationChange,
+    handleSorting,
   } = useFilters();
 
   return (
@@ -235,7 +234,7 @@ const Dashboard: React.FC = () => {
                         style={{ accentColor: "var(--augur-blue)" }}
                       />
                     </th>
-                    <th>
+                    <th onClick={handleSorting} aria-controls="sort">
                       Indicator <span className="sort-icon">↕</span>
                     </th>
                     <th>Type</th>

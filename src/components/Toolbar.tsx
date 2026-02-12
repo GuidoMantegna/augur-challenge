@@ -1,5 +1,5 @@
 import React from "react";
-import { Filters, useFilters } from "../hooks/useFilters";
+import { Filters } from "../hooks/useFilters";
 
 interface ToolbarProps {
     handleFilterChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
@@ -7,9 +7,8 @@ interface ToolbarProps {
     filters: Filters;
 }
 
-const Toolbar: React.FC<ToolbarProps> = ({}) => {
-    const { filters, handleFilterChange, clearFilters } = useFilters();
-    
+const Toolbar: React.FC<ToolbarProps> = ({filters, handleFilterChange, clearFilters}) => {
+
     return (
         <form className="toolbar">
           <div className="input-with-icon" style={{ width: '260px' }}>
@@ -21,26 +20,26 @@ const Toolbar: React.FC<ToolbarProps> = ({}) => {
           <div className="toolbar-divider"></div>
           <div className="toolbar-group">
             <select className="select" name="severity" onChange={handleFilterChange} value={filters.severity}>
-              <option>All Severities</option>
-              <option>Critical</option>
-              <option>High</option>
-              <option>Medium</option>
-              <option>Low</option>
+              <option value="">All Severities</option>
+              <option value="critical">Critical</option>
+              <option value="high">High</option>
+              <option value="medium">Medium</option>
+              <option value="low">Low</option>
             </select>
             <select className="select" name="type" onChange={handleFilterChange} value={filters.type}>
-              <option>All Types</option>
-              <option>IP Address</option>
-              <option>Domain</option>
-              <option>File Hash</option>
-              <option>URL</option>
+              <option value="">All Types</option>
+              <option value="ip">IP Address</option>
+              <option value="domain">Domain</option>
+              <option value="hash">File Hash</option>
+              <option value="url">URL</option>
             </select>
             <select className="select" name="source" onChange={handleFilterChange} value={filters.source}>
-              <option>All Sources</option>
-              <option>AbuseIPDB</option>
-              <option>VirusTotal</option>
-              <option>OTX AlienVault</option>
-              <option>Emerging Threats</option>
-              <option>Silent Push</option>
+              <option value="">All Sources</option>
+              <option value="abuseipdb">AbuseIPDB</option>
+              <option value="virustotal">VirusTotal</option>
+              <option value="otx">OTX AlienVault</option>
+              <option value="emergingthreats">Emerging Threats</option>
+              <option value="silentpush">Silent Push</option>
             </select>
           </div>
           <div style={{ marginLeft: 'auto' }}>
