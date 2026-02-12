@@ -1,10 +1,12 @@
 import { Indicator } from "../types/indicator";
 import { timeAgoHM } from "../utils";
 interface TableRowProps extends Indicator {
-  selected: boolean;
+  // selected: boolean;
+  // fetchDetail: (id: string) => void;
+  // setDetail: React.Dispatch<React.SetStateAction<Indicator | null>>;
 }
 const TableRow: React.FC<TableRowProps> = ({
-  id,
+  // id,
   value,
   type,
   severity,
@@ -12,13 +14,16 @@ const TableRow: React.FC<TableRowProps> = ({
   source,
   tags,
   lastSeen,
-  selected,
+  // selected,
+  // fetchDetail,
+  // setDetail,
 }) => (
-  <tr key={id} className={selected ? "selected" : ""}>
+  // <tr key={id} className={selected ? "selected" : ""} onClick={() => fetchDetail(id)} data-id={id}>
+  <>
     <td>
       <input
         type="checkbox"
-        defaultChecked={selected}
+        // defaultChecked={selected}
         style={{ accentColor: "var(--augur-blue)" }}
       />
     </td>
@@ -59,7 +64,8 @@ const TableRow: React.FC<TableRowProps> = ({
       ))}
     </td>
     <td className="td-time">{timeAgoHM(lastSeen)}</td>
-  </tr>
+  </>
+  // </tr>
 );
 
 export default TableRow;
