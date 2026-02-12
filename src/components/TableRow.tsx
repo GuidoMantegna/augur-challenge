@@ -2,11 +2,8 @@ import { Indicator } from "../types/indicator";
 import { timeAgoHM } from "../utils";
 interface TableRowProps extends Indicator {
   selected: boolean;
-  // fetchDetail: (id: string) => void;
-  // setDetail: React.Dispatch<React.SetStateAction<Indicator | null>>;
 }
 const TableRow: React.FC<TableRowProps> = ({
-  // id,
   value,
   type,
   severity,
@@ -15,10 +12,7 @@ const TableRow: React.FC<TableRowProps> = ({
   tags,
   lastSeen,
   selected,
-  // fetchDetail,
-  // setDetail,
 }) => (
-  // <tr key={id} className={selected ? "selected" : ""} onClick={() => fetchDetail(id)} data-id={id}>
   <>
     <td>
       <input
@@ -65,7 +59,6 @@ const TableRow: React.FC<TableRowProps> = ({
     </td>
     <td className="td-time">{timeAgoHM(lastSeen)}</td>
   </>
-  // </tr>
 );
 
 export default TableRow;
