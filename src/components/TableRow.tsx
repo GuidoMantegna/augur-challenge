@@ -1,7 +1,7 @@
 import { Indicator } from "../types/indicator";
 import { timeAgoHM } from "../utils";
 interface TableRowProps extends Indicator {
-  // selected: boolean;
+  selected: boolean;
   // fetchDetail: (id: string) => void;
   // setDetail: React.Dispatch<React.SetStateAction<Indicator | null>>;
 }
@@ -14,7 +14,7 @@ const TableRow: React.FC<TableRowProps> = ({
   source,
   tags,
   lastSeen,
-  // selected,
+  selected,
   // fetchDetail,
   // setDetail,
 }) => (
@@ -23,7 +23,7 @@ const TableRow: React.FC<TableRowProps> = ({
     <td>
       <input
         type="checkbox"
-        // defaultChecked={selected}
+        defaultChecked={selected}
         style={{ accentColor: "var(--augur-blue)" }}
       />
     </td>

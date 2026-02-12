@@ -16,9 +16,11 @@ const Dashboard: React.FC = () => {
     filters,
     handlePaginationChange,
     handleSorting,
+    loading
   } = useFilters();
   const [details, setDetails] = useState<Indicator | null>(null);
 
+  if (loading) return <p>Loading...</p>;
   return (
     <div className="app-layout">
       {/* SIDEBAR */}
@@ -252,40 +254,43 @@ const Dashboard: React.FC = () => {
                 </thead>
                 <tbody>
                   {data.data.map((row) => (
-                     <tr key={row.id} className={details?.id === row.id ? "selected" : ""} onClick={() => setDetails(row)}>
-
-                       <TableRow {...row}/>
-                     </tr>
+                    <tr
+                      key={row.id}
+                      className={details?.id === row.id ? "selected" : ""}
+                      onClick={() => setDetails(row)}
+                    >
+                      <TableRow {...row} selected={details?.id === row.id} />
+                    </tr>
                   ))}
                 </tbody>
               </table>
             </div>
             {/* Pagination */}
-            <Pagination handlePaginationChange={handlePaginationChange} data={data} />
+            <Pagination
+              handlePaginationChange={handlePaginationChange}
+              data={data}
+            />
           </div>
 
           {/* Detail Panel */}
-          {
-            details && (
-
-          <aside
-            className="detail-panel"
-            style={{ position: "relative", flexShrink: 0 }}
-          >
-            <div className="detail-header">
-              <h3>Indicator Details</h3>
-              <button
-                className="btn btn-ghost btn-sm"
-                style={{ fontSize: "16px" }}
-                onClick={() => setDetails(null)}
-              >
-                ✕
-              </button>
-            </div>
-            <DetailSection details={details} />
-          </aside>
-            )
-          }
+          {details && (
+            <aside
+              className="detail-panel"
+              style={{ position: "relative", flexShrink: 0 }}
+            >
+              <div className="detail-header">
+                <h3>Indicator Details</h3>
+                <button
+                  className="btn btn-ghost btn-sm"
+                  style={{ fontSize: "16px" }}
+                  onClick={() => setDetails(null)}
+                >
+                  ✕
+                </button>
+              </div>
+              <DetailSection details={details} />
+            </aside>
+          )}
         </div>
       </main>
     </div>
