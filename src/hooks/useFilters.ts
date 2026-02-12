@@ -13,6 +13,8 @@ const INITIAL_FILTERS = {
   limit: 20,
 };
 
+type Sorting = "Az" | "Za" | false;
+
 export interface Filters {
   search: string;
   severity: string;
@@ -28,30 +30,42 @@ export const useFilters = () => {
     useState<PaginatedResponse<Indicator>>(INITIAL_INDICATORS);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [sorting, setSorting] = useState<Sorting>(false);
 
   const handleFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       setFilters({ ...filters, [event.target.name]: event.target.value });
     },
-    [filters],
+    [filters, data],
   );
 
   const handlePaginationChange = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-        const { dir } = event.currentTarget.dataset;
-        if (dir === 'prev') {
-            setFilters({ ...filters, page: filters.page - 1 });
-        } else if (dir === 'next') {
-            setFilters({ ...filters, page: filters.page + 1 });
-        } else {
-            setFilters({ ...filters, page: Number(dir) });
-        }
+      const { dir } = event.currentTarget.dataset;
+      if (dir === "prev") {
+        setFilters({ ...filters, page: filters.page - 1 });
+      } else if (dir === "next") {
+        setFilters({ ...filters, page: filters.page + 1 });
+      } else {
+        setFilters({ ...filters, page: Number(dir) });
+      }
     },
     [filters, data],
-  );    
+  );
 
   const clearFilters = () => {
     setFilters(INITIAL_FILTERS);
+  };
+
+  const handleSorting = () => {
+    let sortedData = [...data.data];
+    if (sorting === "Az") {
+      sortedData.sort((a, b) => a.value.localeCompare(b.value));
+    } else {
+      sortedData.sort((a, b) => b.value.localeCompare(a.value));
+    }
+    setData({ ...data, data: sortedData });
+    setSorting(sorting === "Az" ? "Za" : "Az");
   };
 
   useEffect(() => {
@@ -77,5 +91,14 @@ export const useFilters = () => {
     }
   };
 
-  return { filters, loading, error, handleFilterChange, data, clearFilters, handlePaginationChange };
+  return {
+    filters,
+    loading,
+    error,
+    handleFilterChange,
+    data,
+    clearFilters,
+    handlePaginationChange,
+    handleSorting,
+  };
 };
