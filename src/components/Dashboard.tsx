@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useStats } from "../hooks/useStats";
 import { useFilters } from "../hooks/useFilters";
 import TableRow from "./TableRow";
 import Toolbar from "./Toolbar";
 import Pagination from "./Pagination";
+import { Indicator } from "../types/indicator";
+import DetailSection from "./DetailSection";
 
 const Dashboard: React.FC = () => {
   const { stats } = useStats();
@@ -15,6 +17,7 @@ const Dashboard: React.FC = () => {
     handlePaginationChange,
     handleSorting,
   } = useFilters();
+  const [details, setDetails] = useState<Indicator | null>(null);
 
   return (
     <div className="app-layout">
@@ -249,7 +252,10 @@ const Dashboard: React.FC = () => {
                 </thead>
                 <tbody>
                   {data.data.map((row) => (
-                    <TableRow key={row.id} selected={false} {...row} />
+                     <tr key={row.id} className={details?.id === row.id ? "selected" : ""} onClick={() => setDetails(row)}>
+
+                       <TableRow {...row}/>
+                     </tr>
                   ))}
                 </tbody>
               </table>
@@ -259,6 +265,9 @@ const Dashboard: React.FC = () => {
           </div>
 
           {/* Detail Panel */}
+          {
+            details && (
+
           <aside
             className="detail-panel"
             style={{ position: "relative", flexShrink: 0 }}
@@ -268,79 +277,15 @@ const Dashboard: React.FC = () => {
               <button
                 className="btn btn-ghost btn-sm"
                 style={{ fontSize: "16px" }}
+                onClick={() => setDetails(null)}
               >
                 ✕
               </button>
             </div>
-            <div className="detail-body">
-              <DetailSection label="Value" value="185.220.101.34" />
-              <div className="detail-section">
-                <div className="detail-section-label">Classification</div>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "8px",
-                    alignItems: "center",
-                    marginTop: "4px",
-                  }}
-                >
-                  <span className="badge badge-critical">Critical</span>
-                  <span className="td-type">⬡ IP Address</span>
-                </div>
-              </div>
-              <div className="detail-section">
-                <div className="detail-section-label">Confidence Score</div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px",
-                    marginTop: "4px",
-                  }}
-                >
-                  <div
-                    className="confidence-bar"
-                    style={{ width: "120px", height: "6px" }}
-                  >
-                    <div
-                      className="confidence-bar-fill"
-                      style={{
-                        width: "94%",
-                        background: "var(--severity-critical)",
-                      }}
-                    ></div>
-                  </div>
-                  <span
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: 700,
-                      fontFamily: "var(--font-mono)",
-                      color: "var(--severity-critical)",
-                    }}
-                  >
-                    94%
-                  </span>
-                </div>
-              </div>
-              <div
-                style={{
-                  marginTop: "var(--sp-6)",
-                  display: "flex",
-                  gap: "8px",
-                }}
-              >
-                <button
-                  className="btn btn-secondary btn-sm"
-                  style={{ flex: 1 }}
-                >
-                  Investigate
-                </button>
-                <button className="btn btn-danger btn-sm" style={{ flex: 1 }}>
-                  Block
-                </button>
-              </div>
-            </div>
+            <DetailSection details={details} />
           </aside>
+            )
+          }
         </div>
       </main>
     </div>
@@ -381,15 +326,4 @@ const StatCard: React.FC<StatCardProps> = ({
     <div className="stat-card-sub">{sub}</div>
   </div>
 );
-interface DetailSectionProps {
-  label: string;
-  value: string;
-}
-const DetailSection: React.FC<DetailSectionProps> = ({ label, value }) => (
-  <div className="detail-section">
-    <div className="detail-section-label">{label}</div>
-    <div className="detail-value">{value}</div>
-  </div>
-);
-
 export default Dashboard;
