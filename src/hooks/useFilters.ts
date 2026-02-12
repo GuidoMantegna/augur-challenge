@@ -1,8 +1,13 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { PaginatedResponse, Indicator } from "../types/indicator";
-import { INITIAL_INDICATORS } from "./useIndicators";
+import { apiRequest } from "../api/apiClient";
 
-const BASE_URL = "http://localhost:3001/api/indicators";
+export const INITIAL_INDICATORS: PaginatedResponse<Indicator> = {
+  data: [],
+  total: 0,
+  page: 0,
+  totalPages: 0,
+};
 
 const INITIAL_FILTERS = {
   search: "",
@@ -71,24 +76,20 @@ export const useFilters = () => {
   useEffect(() => {
     // Debounce search
     const timeout = setTimeout(() => {
-      fetchFilters(filters);
+      fetchFilters();
     }, 750);
     return () => clearTimeout(timeout);
   }, [filters]);
 
-  const fetchFilters = async (params: Filters) => {
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `${BASE_URL}?search=${params.search}&severity=${params.severity}&type=${params.type}&page=${params.page}&limit=${params.limit}`,
-      );
-      const data = await response.json();
-      setData(data);
-    } catch (error) {
-      setError("Failed to fetch filters");
-    } finally {
-      setLoading(false);
-    }
+  const fetchFilters = async () => {
+    const data = await apiRequest({
+      method: "get",
+      url: "/api/indicators",
+      params: filters,
+      setLoading,
+      setError,
+    });
+    setData(data);
   };
 
   return {
