@@ -1,17 +1,17 @@
 import { useState, useCallback, useEffect } from "react";
-import { PaginatedResponse, Indicator } from "../types/indicator";
+import { PaginatedResponse, Indicator, IndicatorFilters } from "../types/indicator";
 import { apiRequest } from "../api/apiClient";
 
 export const INITIAL_INDICATORS: PaginatedResponse<Indicator> = {
   data: [],
   total: 0,
-  page: 0,
+  page: 1,
   totalPages: 0,
 };
 
 const INITIAL_FILTERS = {
   search: "",
-  severity: "All Severities",
+  severity: "",
   source: "",
   type: "",
   page: 1,
@@ -36,9 +36,24 @@ export const useFilters = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [sorting, setSorting] = useState<Sorting>(false);
+  const [isSearch, setIsSearch] = useState<boolean>(false);
 
+  useEffect(() => {
+    // Debounce search
+    if(!isSearch) {
+      fetchFilters();
+    } else {
+      const timeout = setTimeout(() => {
+        fetchFilters();
+      }, 750);
+      return () => clearTimeout(timeout);
+    }
+  }, [filters]);
+
+  // HANDLERS
   const handleFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      setIsSearch(event.target.name === "search");
       setFilters({ ...filters, [event.target.name]: event.target.value });
     },
     [filters, data],
@@ -47,6 +62,7 @@ export const useFilters = () => {
   const handlePaginationChange = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       const { dir } = event.currentTarget.dataset;
+      setIsSearch(false);
       if (dir === "prev") {
         setFilters({ ...filters, page: filters.page - 1 });
       } else if (dir === "next") {
@@ -58,11 +74,7 @@ export const useFilters = () => {
     [filters, data],
   );
 
-  const clearFilters = () => {
-    setFilters(INITIAL_FILTERS);
-  };
-
-  const handleSorting = () => {
+  const handleSorting = useCallback(() => {
     let sortedData = [...data.data];
     if (sorting === "Az") {
       sortedData.sort((a, b) => a.value.localeCompare(b.value));
@@ -71,15 +83,11 @@ export const useFilters = () => {
     }
     setData({ ...data, data: sortedData });
     setSorting(sorting === "Az" ? "Za" : "Az");
-  };
+  }, [data, sorting]);
 
-  useEffect(() => {
-    // Debounce search
-    const timeout = setTimeout(() => {
-      fetchFilters();
-    }, 750);
-    return () => clearTimeout(timeout);
-  }, [filters]);
+  const clearFilters = () => {
+    setFilters(INITIAL_FILTERS);
+  };
 
   const fetchFilters = async () => {
     const data = await apiRequest({

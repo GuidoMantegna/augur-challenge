@@ -75,7 +75,7 @@ const Dashboard: React.FC = () => {
           filters={filters}
         />
         {/* TABLE */}
-        <div style={{ display: "flex", flex: 1 }}>
+        <div style={{ display: "flex", flex: 1, overflowX: "scroll", position: "relative" }}>
           <div className="content-area">
             <div
               className="data-table-wrapper"
@@ -127,7 +127,7 @@ const Dashboard: React.FC = () => {
           {details && (
             <aside
               className="detail-panel"
-              style={{ position: "relative", flexShrink: 0 }}
+              style={{ flexShrink: 0 }}
             >
               <div className="detail-header">
                 <h3>Indicator Details</h3>
