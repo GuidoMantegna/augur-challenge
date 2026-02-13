@@ -9,7 +9,7 @@ export const INITIAL_INDICATORS: PaginatedResponse<Indicator> = {
   totalPages: 0,
 };
 
-const INITIAL_FILTERS = {
+export const INITIAL_FILTERS = {
   search: "",
   severity: "",
   source: "",
