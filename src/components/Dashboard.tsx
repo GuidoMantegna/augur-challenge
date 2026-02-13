@@ -115,7 +115,7 @@ const Dashboard: React.FC = () => {
                       key={row.id}
                       className={details?.id === row.id ? "selected" : ""}
                       onClick={() => setDetails(row)}
-
+                      data-testid="table-row"
                     >
                       <TableRow {...row} selected={details?.id === row.id} loading={indicatorsLoading} />
                     </tr>

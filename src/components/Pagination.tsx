@@ -20,19 +20,34 @@ const Pagination: React.FC<PaginationProps> = ({
           data-dir="prev"
           onClick={handlePaginationChange}
           disabled={data.page === 1}
+          data-testid="prev-page"
         >
           ‹
         </button>
-        {[data.page, data.page + 1, data.page + 2].map((page) => (
-          <button
-            key={page}
-            className={`pagination-btn ${data.page === page ? "active" : ""}`}
-            data-dir={page}
-            onClick={handlePaginationChange}
-          >
-            {page}
-          </button>
-        ))}
+        <button
+          className="pagination-btn active"
+          data-dir={data.page}
+          onClick={handlePaginationChange}
+          data-testid="current-page"
+        >
+          {data.page}
+        </button>
+        <button
+          className="pagination-btn"
+          data-dir={data.page + 1}
+          onClick={handlePaginationChange}
+          data-testid={`page-${data.page + 1}`}
+        >
+          {data.page + 1}
+        </button>
+        <button
+          className="pagination-btn"
+          data-dir={data.page + 2}
+          onClick={handlePaginationChange}
+          data-testid={`page-${data.page + 2}`}
+        >
+          {data.page + 2}
+        </button>
         <button className="pagination-btn">…</button>
         <button
           className="pagination-btn"
@@ -46,6 +61,7 @@ const Pagination: React.FC<PaginationProps> = ({
           data-dir="next"
           onClick={handlePaginationChange}
           disabled={data.page === data.totalPages}
+          data-testid="next-page"
         >
           ›
         </button>
