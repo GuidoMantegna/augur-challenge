@@ -1,4 +1,5 @@
 /* Global reset — feel free to replace with your own approach (CSS Modules, Tailwind, styled-components, etc.) */
+@import "tailwindcss";
 
 *,
 *::before,
@@ -914,14 +915,6 @@ body {
   background: var(--augur-blue);
   border-color: var(--augur-blue);
   color: white;
-}
-
-/* LOADING */
-.skeleton {
-  background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-card) 50%, var(--bg-elevated) 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  border-radius: var(--radius-sm);
 }
 
 @keyframes shimmer {

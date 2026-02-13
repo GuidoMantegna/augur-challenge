@@ -15,7 +15,7 @@ import { useStats, useFilters } from "../hooks";
 import { Indicator } from "../types/indicator";
 
 const Dashboard: React.FC = () => {
-  const { stats } = useStats();
+  const { stats, loading: statsLoading } = useStats();
   const {
     handleFilterChange,
     data,
@@ -23,6 +23,7 @@ const Dashboard: React.FC = () => {
     filters,
     handlePaginationChange,
     handleSorting,
+    loading: indicatorsLoading,
   } = useFilters();
   const [details, setDetails] = useState<Indicator | null>(null);
 
@@ -42,30 +43,35 @@ const Dashboard: React.FC = () => {
             sub="↑ 12% from last week"
             type="total"
             icon
+            loading={statsLoading}
           />
           <StatCard
             label="Critical"
             value={stats.critical}
             sub="Requires immediate action"
             type="critical"
+            loading={statsLoading}
           />
           <StatCard
             label="High"
             value={stats.high}
             sub="Active monitoring"
             type="high"
+            loading={statsLoading}
           />
           <StatCard
             label="Medium"
             value={stats.medium}
             sub="Under review"
             type="medium"
+            loading={statsLoading}
           />
           <StatCard
             label="Low"
             value={stats.low}
             sub="Informational"
             type="low"
+            loading={statsLoading}
           />
         </section>
         {/* TOOLBAR */}
@@ -109,8 +115,9 @@ const Dashboard: React.FC = () => {
                       key={row.id}
                       className={details?.id === row.id ? "selected" : ""}
                       onClick={() => setDetails(row)}
+
                     >
-                      <TableRow {...row} selected={details?.id === row.id} />
+                      <TableRow {...row} selected={details?.id === row.id} loading={indicatorsLoading} />
                     </tr>
                   ))}
                 </tbody>
