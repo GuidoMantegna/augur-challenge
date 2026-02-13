@@ -54,12 +54,12 @@ const TableRow: React.FC<TableRowProps> = ({
           style={{ accentColor: "var(--augur-blue)" }}
         />
       </td>
-      <td className="td-indicator">{value}</td>
+      <td className="td-indicator"  data-testid="td-indicator">{value}</td>
       <td>
         <span className="td-type">{type}</span>
       </td>
       <td>
-        <span className={`badge badge-${severity.toLowerCase()}`}>
+        <span className={`badge badge-${severity.toLowerCase()}`} data-testid="td-severity">
           {severity}
         </span>
       </td>
