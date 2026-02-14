@@ -81,7 +81,14 @@ const Dashboard: React.FC = () => {
           filters={filters}
         />
         {/* TABLE */}
-        <div style={{ display: "flex", flex: 1, overflowX: "scroll", position: "relative" }}>
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            overflowX: "scroll",
+            position: "relative",
+          }}
+        >
           <div className="content-area">
             <div
               className="data-table-wrapper"
@@ -117,7 +124,11 @@ const Dashboard: React.FC = () => {
                       onClick={() => setDetails(row)}
                       data-testid="table-row"
                     >
-                      <TableRow {...row} selected={details?.id === row.id} loading={indicatorsLoading} />
+                      <TableRow
+                        {...row}
+                        selected={details?.id === row.id}
+                        loading={indicatorsLoading}
+                      />
                     </tr>
                   ))}
                 </tbody>
@@ -132,10 +143,7 @@ const Dashboard: React.FC = () => {
 
           {/* Detail Panel */}
           {details && (
-            <aside
-              className="detail-panel"
-              style={{ flexShrink: 0 }}
-            >
+            <aside className="detail-panel" style={{ flexShrink: 0 }}>
               <div className="detail-header">
                 <h3>Indicator Details</h3>
                 <button

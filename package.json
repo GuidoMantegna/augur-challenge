@@ -10,7 +10,8 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "test": "vitest"
+    "test": "vitest",
+    "test:ui": "vitest run src/test/components"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",

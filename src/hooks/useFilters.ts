@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from "react";
-import { PaginatedResponse, Indicator, IndicatorFilters } from "../types/indicator";
+import { PaginatedResponse, Indicator } from "../types/indicator";
 import { apiRequest } from "../api/apiClient";
 
 export const INITIAL_INDICATORS: PaginatedResponse<Indicator> = {
@@ -40,7 +40,7 @@ export const useFilters = () => {
 
   useEffect(() => {
     // Debounce search
-    if(!isSearch) {
+    if (!isSearch) {
       fetchFilters();
     } else {
       const timeout = setTimeout(() => {

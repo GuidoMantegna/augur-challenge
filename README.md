@@ -124,4 +124,101 @@ The project includes Vitest + React Testing Library. Write tests for your key co
 
 ### Candidate Notes
 
-_Add your design decisions, trade-offs, and anything you'd like to highlight here._
+# 📌 Design Decisions, Trade-offs & Future Improvements
+
+---
+
+## 🏗 Architecture & Structure
+
+- Built using a modular and reusable component architecture.
+- Clear separation between UI, business logic, and data handling.
+- Components are designed to be composable and scalable.
+- Avoided unnecessary global state to reduce complexity and keep the solution lightweight.
+
+### Trade-off
+
+Given the scope of the challenge, I prioritized simplicity and clarity over introducing heavier architectural patterns.  
+
+For a production-grade system, I would consider:
+- A more structured server-state management strategy
+- URL-driven state synchronization
+
+---
+
+## 📊 Data Handling & Pagination
+
+- Pagination logic is isolated and easily extensible.
+
+### Improvements (with more time)
+
+- Improved loading states and page transition UX
+
+---
+
+## 🎨 Styling Strategy
+
+- Tailwind CSS used for rapid and consistent UI development.
+
+### Improvements
+
+- Reorganize CSS structure for better maintainability
+- Lean further into Tailwind patterns to reduce custom styles
+- Improve design token consistency (spacing, typography, color usage)
+
+---
+
+## 🧪 Testing Strategy
+
+Current tests focus on core logic and primary components.
+
+### With more time, I would:
+
+- Increase unit test coverage
+- Improve API mocking strategy
+
+The goal would be to increase confidence in refactors and ensure stability as new features are introduced.
+
+---
+
+## ✨ UX Improvements
+
+### Detail Section
+
+- The detail view is functional but could benefit from smoother transitions.
+- Loading states and micro-interactions could be improved to enhance perceived performance.
+
+---
+
+## 🚀 Potential New Features
+
+### 📁 Export Functionality (CSV / XLSX)
+
+- Export filtered results
+- Export selected rows
+
+### ➕ Add Indicator Feature
+
+- Form with validation
+
+---
+
+## 📈 Scalability Considerations
+
+For a production-ready system, I would prioritize:
+ 
+- Error boundaries  
+- Accessibility improvements (ARIA, keyboard navigation)  
+
+---
+
+## 🧠 Final Notes
+
+Within the challenge constraints, I focused on:
+
+- Clean and readable code  
+- Maintainable structure  
+- Extensibility  
+- Product-aware decisions  
+- Avoiding premature optimization  
+
+The goal was to build a solid foundation capable of evolving into a production-grade system.
