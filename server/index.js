@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import { generateIndicators } from './data.js';
 
-export const app = express();
+const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
@@ -111,3 +111,5 @@ if (process.env.NODE_ENV !== 'production') {
     console.log(`  📊 ${indicators.length} indicators loaded\n`);
   });
 }
+
+export default app;
