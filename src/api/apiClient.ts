@@ -1,7 +1,8 @@
 import axios from "axios";
 
 export const apiClient = axios.create({
-  baseURL: "http://localhost:3001",
+  // @ts-ignore
+  baseURL: process.env.NODE_ENV === "production" ? process.env.API_URL : "http://localhost:3001",
 });
 
 export const apiRequest = async ({

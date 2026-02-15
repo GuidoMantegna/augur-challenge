@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { generateIndicators } from './data.js';
 
-const app = express();
-const PORT = 3001;
+export const app = express();
+const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
@@ -105,7 +105,9 @@ app.get('/api/stats', (_req, res) => {
   res.json(stats);
 });
 
-app.listen(PORT, () => {
-  console.log(`\n  🛡  Mock Threat Intel API running at http://localhost:${PORT}`);
-  console.log(`  📊 ${indicators.length} indicators loaded\n`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`\n  🛡  Mock Threat Intel API running at http://localhost:${PORT}`);
+    console.log(`  📊 ${indicators.length} indicators loaded\n`);
+  });
+}
