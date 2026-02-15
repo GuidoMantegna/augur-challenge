@@ -1,5 +1,8 @@
 import React from "react";
 import { Filters } from "../hooks/useFilters";
+// @ts-ignore
+import { sources } from "../../server/data";
+import { Source } from "../types/indicator";
 
 interface ToolbarProps {
   handleFilterChange: (
@@ -92,27 +95,15 @@ const Toolbar: React.FC<ToolbarProps> = ({
           value={filters.source}
           data-testid="sources-select"
         >
-          <option value="all" data-testid="source-option-all">
-            All Sources
-          </option>
-          <option value="abuseipdb" data-testid="source-option-api">
-            AbuseIPDB
-          </option>
-          <option value="virustotal" data-testid="source-option-virustotal">
-            VirusTotal
-          </option>
-          <option value="otx" data-testid="source-option-otx">
-            OTX AlienVault
-          </option>
-          <option
-            value="emergingthreats"
-            data-testid="source-option-emergingthreats"
-          >
-            Emerging Threats
-          </option>
-          <option value="silentpush" data-testid="source-option-silentpush">
-            Silent Push
-          </option>
+          {sources.map((source: Source) => (
+            <option
+              key={source}
+              value={source}
+              data-testid={`source-option-${source}`}
+            >
+              {source}
+            </option>
+          ))}
         </select>
       </div>
       <div style={{ marginLeft: "auto" }}>

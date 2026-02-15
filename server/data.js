@@ -60,7 +60,7 @@ function randomURL() {
   return `https://${randomDomain()}${randomItem(paths)}?id=${randomInt(10000, 99999)}`;
 }
 
-const sources = [
+export const sources = [
   'AbuseIPDB', 'OTX AlienVault', 'VirusTotal', 'Emerging Threats', 'MalwareBazaar',
   'PhishTank', 'Spamhaus', 'ThreatFox', 'URLhaus', 'CIRCL', 'Shodan',
   'GreyNoise', 'BinaryEdge', 'Censys', 'Silent Push', 'DomainTools'

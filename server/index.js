@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { generateIndicators } from './data.js';
+import { generateIndicators, sources } from './data.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -19,6 +19,7 @@ const indicators = generateIndicators(500);
  *   - limit    (number, default: 20, max: 100)
  *   - severity (string, one of: critical, high, medium, low)
  *   - type     (string, one of: ip, domain, hash, url)
+ *   - source   (string, one of: AbuseIPDB, OTX AlienVault, etc)
  *   - search   (string, partial match on indicator value)
  *
  * Response:
@@ -34,6 +35,7 @@ app.get('/api/indicators', (req, res) => {
   const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
   const severity = req.query.severity?.toLowerCase();
   const type = req.query.type?.toLowerCase();
+  const source = req.query.source;
   const search = req.query.search?.toLowerCase();
 
   let filtered = [...indicators];
@@ -44,6 +46,10 @@ app.get('/api/indicators', (req, res) => {
 
   if (type && ['ip', 'domain', 'hash', 'url'].includes(type)) {
     filtered = filtered.filter((i) => i.type === type);
+  }
+
+  if (source && sources.includes(source)) {
+    filtered = filtered.filter((i) => i.source === source);
   }
 
   if (search) {
