@@ -95,7 +95,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
           value={filters.source}
           data-testid="sources-select"
         >
-          {sources.map((source: Source) => (
+          {["All Sources", ...sources].map((source: Source) => (
             <option
               key={source}
               value={source}

@@ -1,4 +1,26 @@
 import { PaginatedResponse, Indicator } from "../types/indicator";
+import { getPageNumbers } from "../utils";
+
+const PaginationButton = ({
+  page,
+  handlePaginationChange,
+  selected,
+}: {
+  page: number | string;
+  handlePaginationChange: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  selected?: boolean;
+}) => {
+  return (
+    <button
+      className={`pagination-btn ${selected ? "active" : ""}`}
+      data-dir={page}
+      onClick={handlePaginationChange}
+      data-testid={`page-${page}`}
+    >
+      {page}
+    </button>
+  );
+};
 
 interface PaginationProps {
   handlePaginationChange: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -9,6 +31,8 @@ const Pagination: React.FC<PaginationProps> = ({
   handlePaginationChange,
   data,
 }) => {
+  const pages = getPageNumbers(data.page, data.totalPages);
+
   return (
     <div className="pagination">
       <span className="pagination-info">
@@ -24,38 +48,19 @@ const Pagination: React.FC<PaginationProps> = ({
         >
           ‹
         </button>
-        <button
-          className="pagination-btn active"
-          data-dir={data.page}
-          onClick={handlePaginationChange}
-          data-testid="current-page"
-        >
-          {data.page}
-        </button>
-        <button
-          className="pagination-btn"
-          data-dir={data.page + 1}
-          onClick={handlePaginationChange}
-          data-testid={`page-${data.page + 1}`}
-        >
-          {data.page + 1}
-        </button>
-        <button
-          className="pagination-btn"
-          data-dir={data.page + 2}
-          onClick={handlePaginationChange}
-          data-testid={`page-${data.page + 2}`}
-        >
-          {data.page + 2}
-        </button>
-        <button className="pagination-btn">…</button>
-        <button
-          className="pagination-btn"
-          data-dir={data.totalPages}
-          onClick={handlePaginationChange}
-        >
-          {data.totalPages}
-        </button>
+        <ul className="flex gap-1">
+          {pages.map((p, i) => (
+            <li key={`${p}-${i}`}>
+              <PaginationButton
+                page={p}
+                handlePaginationChange={
+                  p === "..." ? () => {} : handlePaginationChange
+                }
+                selected={p === data.page}
+              />
+            </li>
+          ))}
+        </ul>
         <button
           className="pagination-btn"
           data-dir="next"
