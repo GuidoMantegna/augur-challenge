@@ -54,7 +54,7 @@ export const useFilters = () => {
   const handleFilterChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
       setIsSearch(event.target.name === "search");
-      setFilters({ ...filters, [event.target.name]: event.target.value });
+      setFilters({ ...filters, [event.target.name]: event.target.value, page: 1 });
     },
     [filters, data],
   );
