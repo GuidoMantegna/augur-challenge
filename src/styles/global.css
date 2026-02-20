@@ -1,13 +1,13 @@
 /* Global reset — feel free to replace with your own approach (CSS Modules, Tailwind, styled-components, etc.) */
 @import "tailwindcss";
 
-*,
+/* *,
 *::before,
 *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} */
 
 #root {
   min-height: 100vh;
@@ -125,7 +125,7 @@
 /* ============================================================
    RESET & BASE
    ============================================================ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; } */
 
 html {
   font-size: 14px;
@@ -932,6 +932,7 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+::-webkit-scrollbar-corner { background: transparent; }
 
 /* ============================================================
    ASSEMBLED DASHBOARD PREVIEW

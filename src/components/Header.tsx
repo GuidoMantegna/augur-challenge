@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
+import IndicatorForm from "./IndicatorForm";
 
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-        <h1>Modal</h1>
+        <h2 className="modal-header">+ Add Indicator</h2>
+        <IndicatorForm cancel={() => setIsOpen(false)}/>
       </Modal>
       <header className="page-header">
         <div className="page-header-left">

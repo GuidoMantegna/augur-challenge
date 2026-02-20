@@ -5,13 +5,13 @@
  * The mock API returns data matching these interfaces.
  */
 
-export type IndicatorType = 'ip' | 'domain' | 'hash' | 'url';
+export type IndicatorType = 'ip' | 'domain' | 'hash' | 'url' | "";
 
-export type Severity = 'critical' | 'high' | 'medium' | 'low';
+export type Severity = 'critical' | 'high' | 'medium' | 'low' | '';
 
 export type Source = 'AbuseIPDB' | 'OTX AlienVault' | 'VirusTotal' | 'Emerging Threats' | 'MalwareBazaar' |
   'PhishTank' | 'Spamhaus' | 'ThreatFox' | 'URLhaus' | 'CIRCL' | 'Shodan' |
-  'GreyNoise' | 'BinaryEdge' | 'Censys' | 'Silent Push' | 'DomainTools'
+  'GreyNoise' | 'BinaryEdge' | 'Censys' | 'Silent Push' | 'DomainTools' | '';
 
 export interface Indicator {
   id: string;

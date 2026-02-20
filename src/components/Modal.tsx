@@ -79,12 +79,15 @@ export function Modal({ open, onClose, children }: ModalProps) {
         {/* Modal */}
         <div
           className={`
-            relative z-10 w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl
+            relative z-10 w-full max-w-lg rounded-2xl bg-[var(--bg-modal)] p-6 shadow-xl
             transform transition-all duration-200
             ${isVisible ? "scale-100 translate-y-0" : "scale-95 translate-y-4"}
           `}
         >
+          <div className="max-h-[90vh] overflow-scroll p-2">
+
           {children}
+          </div>
         </div>
       </div>
     </Portal>
