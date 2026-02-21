@@ -89,7 +89,7 @@ export const useFilters = () => {
     setFilters(INITIAL_FILTERS);
   };
 
-  const fetchFilters = async () => {
+  const fetchFilters = useCallback(async () => {
     const data = await apiRequest({
       method: "get",
       url: "/api/indicators",
@@ -98,7 +98,7 @@ export const useFilters = () => {
       setError,
     });
     setData(data);
-  };
+  }, [filters]);
 
   return {
     filters,
@@ -109,5 +109,6 @@ export const useFilters = () => {
     clearFilters,
     handlePaginationChange,
     handleSorting,
+    fetchFilters,
   };
 };

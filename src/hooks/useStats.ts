@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { apiRequest } from "../api/apiClient";
 import { Stats } from "../types/stats";
 
@@ -21,7 +21,7 @@ export const useStats = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchStats = async () => {
+  const fetchStats = useCallback(async () => {
     const data = await apiRequest({
       method: "get",
       url: "/api/stats",
@@ -29,11 +29,11 @@ export const useStats = () => {
       setError,
     });
     setStats(data);
-  };
+  }, []);
 
   useEffect(() => {
     fetchStats();
   }, []);
 
-  return { stats, loading, error };
+  return { stats, loading, error, fetchStats };
 };
