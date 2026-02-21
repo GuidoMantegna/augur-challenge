@@ -111,6 +111,17 @@ app.get('/api/stats', (_req, res) => {
   res.json(stats);
 });
 
+/**
+ * POST /api/indicators
+ *
+ * Creates a new indicator.
+ */
+app.post('/api/indicators', (req, res) => {
+  const indicator = req.body;
+  indicators.push(indicator);
+  res.status(201).json(indicator);
+});
+
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
     console.log(`\n  🛡  Mock Threat Intel API running at http://localhost:${PORT}`);
