@@ -15,7 +15,7 @@ import { useStats, useFilters } from "../hooks";
 import { Indicator } from "../types/indicator";
 
 const Dashboard: React.FC = () => {
-  const { stats, loading: statsLoading } = useStats();
+  const { stats, loading: statsLoading, fetchStats } = useStats();
   const {
     handleFilterChange,
     data,
@@ -24,6 +24,7 @@ const Dashboard: React.FC = () => {
     handlePaginationChange,
     handleSorting,
     loading: indicatorsLoading,
+    fetchFilters,
   } = useFilters();
   const [details, setDetails] = useState<Indicator | null>(null);
 
@@ -34,7 +35,7 @@ const Dashboard: React.FC = () => {
       {/* MAIN CONTENT */}
       <main className="main-content">
         {/* PAGE HEADER */}
-        <Header />
+        <Header fetchFilters={fetchFilters} fetchStats={fetchStats} />
         {/* STATS */}
         <section className="stats-row">
           <StatCard

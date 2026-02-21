@@ -4,10 +4,10 @@ import { Source } from "../types/indicator";
 import { useIndicatorForm } from "../hooks";
 
 interface IndicatorFormProps {
-  cancel: () => void;
+  closeModal: (action: string) => void;
 }
-const IndicatorForm: React.FC<IndicatorFormProps> = ({ cancel }) => {
-  const { form, updateForm, handleSubmit, areFieldFull } = useIndicatorForm();
+const IndicatorForm: React.FC<IndicatorFormProps> = ({ closeModal }) => {
+  const { form, updateForm, handleSubmit, areFieldFull } = useIndicatorForm(closeModal);
 
   return (
     <form className="mt-6" onSubmit={handleSubmit}>
@@ -17,11 +17,11 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({ cancel }) => {
         </label>
         <input
           type="text"
-          name="indicator"
+          name="value"
           id="indicator"
           className="input"
           placeholder="Indicator ID"
-          value={form.indicator}
+          value={form.value}
           onChange={updateForm}
         />
       </fieldset>
@@ -107,23 +107,6 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({ cancel }) => {
         </select>
       </fieldset>
       <fieldset className="flex flex-col gap-2 mb-4">
-        <label htmlFor="confidence" className="text-[var(--text-secondary)]">
-          Confidence
-        </label>
-        <input
-          type="number"
-          name="confidence"
-          id="confidence"
-          className="input"
-          data-testid="confidence-input"
-          min="1"
-          max="100"
-          placeholder="1 - 100"
-          value={form.confidence}
-          onChange={updateForm}
-        />
-      </fieldset>
-      <fieldset className="flex flex-col gap-2 mb-4">
         <label htmlFor="tags" className="text-[var(--text-secondary)]">
           Tags
         </label>
@@ -142,7 +125,7 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({ cancel }) => {
         <button
           className="btn btn-secondary w-full justify-center"
           type="button"
-          onClick={cancel}
+          onClick={() => closeModal("cancel")}
         >
           Cancel
         </button>

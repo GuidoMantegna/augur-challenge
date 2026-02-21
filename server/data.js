@@ -3,7 +3,7 @@
  * Produces realistic-looking data so the dashboard feels authentic.
  */
 
-function uuid() {
+export function uuid () {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     const r = (Math.random() * 16) | 0;
     const v = c === 'x' ? r : (r & 0x3) | 0x8;
@@ -19,7 +19,7 @@ function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function randomDate(daysBack) {
+export function randomDate(daysBack) {
   const now = Date.now();
   const past = now - daysBack * 24 * 60 * 60 * 1000;
   return new Date(past + Math.random() * (now - past)).toISOString();
@@ -127,7 +127,7 @@ function generateTags(type) {
   return [...tags];
 }
 
-function confidenceForSeverity(severity) {
+export function confidenceForSeverity(severity) {
   switch (severity) {
     case 'critical': return randomInt(80, 99);
     case 'high': return randomInt(60, 90);
