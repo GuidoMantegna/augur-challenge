@@ -14,10 +14,12 @@
     "test:ui": "vitest run src/test/components"
   },
   "dependencies": {
+    "@fast-csv/format": "^5.0.5",
     "@tailwindcss/vite": "^4.1.18",
     "axios": "^1.13.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {

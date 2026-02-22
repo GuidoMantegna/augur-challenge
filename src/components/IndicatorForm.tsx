@@ -7,7 +7,7 @@ interface IndicatorFormProps {
   closeModal: (action: string) => void;
 }
 const IndicatorForm: React.FC<IndicatorFormProps> = ({ closeModal }) => {
-  const { form, updateForm, handleSubmit, areFieldFull } = useIndicatorForm(closeModal);
+  const { form, updateForm, handleSubmit } = useIndicatorForm(closeModal);
 
   return (
     <form className="mt-6" onSubmit={handleSubmit}>
@@ -133,7 +133,7 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({ closeModal }) => {
           className="btn btn-primary w-full justify-center"
           type="submit"
           data-testid="add-indicator-button"
-          disabled={!areFieldFull}
+          // disabled={!areFieldFull}
         >
           + Add Indicator
         </button>
