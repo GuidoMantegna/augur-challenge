@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const apiClient = axios.create({
   // @ts-ignore
@@ -33,6 +34,10 @@ export const apiRequest = async ({
     });
     return response.data;
   } catch (error: any) {
+    toast(error.message,{
+      type: "error",
+      toastId: "api-error",
+    });
     setError(error);
     throw error;
   } finally {

@@ -2,12 +2,12 @@ import { useState } from "react";
 import { IndicatorType, Severity, Source } from "../types/indicator";
 import { apiRequest } from "../api/apiClient";
 // @ts-ignore
-import {confidenceForSeverity} from "../../server/data.js";
+import { confidenceForSeverity } from "../../server/data.js";
 // @ts-ignore
-import {uuid} from "../../server/data.js";
+import { uuid } from "../../server/data.js";
 // @ts-ignore
-import {randomDate} from "../../server/data.js";
-
+import { randomDate } from "../../server/data.js";
+import { toast } from "react-toastify";
 
 interface IndicatorFormProps {
   source: Source | "";
@@ -15,7 +15,7 @@ interface IndicatorFormProps {
   value: string;
   severity: Severity | "";
   tags: string[];
-};
+}
 
 export const useIndicatorForm = (cancel: (action: string) => void) => {
   const [form, setForm] = useState<IndicatorFormProps>({
@@ -42,23 +42,33 @@ export const useIndicatorForm = (cancel: (action: string) => void) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!areFieldFull) return;
-    const indicator = { ...form, 
-      id: uuid(), 
-      firstSeen: new Date().toISOString(), 
+    if (!areFieldFull) {
+      toast("All fields are required", { type: "error", toastId: "indicator-error" });
+      return;
+    }
+    const indicator = {
+      ...form,
+      id: uuid(),
+      firstSeen: new Date().toISOString(),
       lastSeen: randomDate(7),
-      confidence: confidenceForSeverity(form.severity)  
+      confidence: confidenceForSeverity(form.severity),
     };
-    await apiRequest({ method: "post", url: "/api/indicators", data: indicator, setLoading, setError });
+    await apiRequest({
+      method: "post",
+      url: "/api/indicators",
+      data: indicator,
+      setLoading,
+      setError,
+    });
+    toast("Indicator successfully added", {
+      type: "success",
+      toastId: "indicator-success",
+    });
     cancel("submit");
   };
 
   const areFieldFull =
-    form.source &&
-    form.type &&
-    form.value &&
-    form.severity &&
-    form.tags.length;
+    form.source && form.type && form.value && form.severity && form.tags.length;
 
   return { form, updateForm, handleSubmit, areFieldFull, loading, error };
 };

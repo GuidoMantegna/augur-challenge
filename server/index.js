@@ -1,6 +1,7 @@
-import express from 'express';
-import cors from 'cors';
-import { generateIndicators, sources } from './data.js';
+import express from "express";
+import cors from "cors";
+import { generateIndicators, sources } from "./data.js";
+import { format } from "@fast-csv/format";
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -30,7 +31,7 @@ const indicators = generateIndicators(500);
  *     totalPages: number
  *   }
  */
-app.get('/api/indicators', (req, res) => {
+app.get("/api/indicators", (req, res) => {
   const page = Math.max(1, parseInt(req.query.page) || 1);
   const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
   const severity = req.query.severity?.toLowerCase();
@@ -40,11 +41,11 @@ app.get('/api/indicators', (req, res) => {
 
   let filtered = [...indicators];
 
-  if (severity && ['critical', 'high', 'medium', 'low'].includes(severity)) {
+  if (severity && ["critical", "high", "medium", "low"].includes(severity)) {
     filtered = filtered.filter((i) => i.severity === severity);
   }
 
-  if (type && ['ip', 'domain', 'hash', 'url'].includes(type)) {
+  if (type && ["ip", "domain", "hash", "url"].includes(type)) {
     filtered = filtered.filter((i) => i.type === type);
   }
 
@@ -57,7 +58,7 @@ app.get('/api/indicators', (req, res) => {
       (i) =>
         i.value.toLowerCase().includes(search) ||
         i.source.toLowerCase().includes(search) ||
-        i.tags.some((t) => t.toLowerCase().includes(search))
+        i.tags.some((t) => t.toLowerCase().includes(search)),
     );
   }
 
@@ -74,14 +75,38 @@ app.get('/api/indicators', (req, res) => {
 });
 
 /**
+ * GET /api/indicators
+ *
+ * Returns a CSV of all indicators.
+ */
+app.get("/api/indicators/csv", (_req, res) => {
+  const data = [...indicators];
+  // Set headers to trigger a file download
+  res.setHeader("Content-Type", "text/csv");
+  res.setHeader("Content-Disposition", 'attachment; filename="users.csv"');
+
+  // Create a CSV stream with headers
+  const csvStream = format({ headers: true });
+
+  // Pipe the CSV stream to the response object
+  csvStream.pipe(res);
+
+  // Write data to the stream
+  data.forEach((row) => csvStream.write(row));
+
+  // End the stream
+  csvStream.end();
+});
+
+/**
  * GET /api/indicators/:id
  *
  * Returns a single indicator by ID.
  */
-app.get('/api/indicators/:id', (req, res) => {
+app.get("/api/indicators/:id", (req, res) => {
   const indicator = indicators.find((i) => i.id === req.params.id);
   if (!indicator) {
-    return res.status(404).json({ error: 'Indicator not found' });
+    return res.status(404).json({ error: "Indicator not found" });
   }
   const delay = 100 + Math.random() * 200;
   setTimeout(() => {
@@ -94,18 +119,18 @@ app.get('/api/indicators/:id', (req, res) => {
  *
  * Returns summary statistics for the dashboard header.
  */
-app.get('/api/stats', (_req, res) => {
+app.get("/api/stats", (_req, res) => {
   const stats = {
     total: indicators.length,
-    critical: indicators.filter((i) => i.severity === 'critical').length,
-    high: indicators.filter((i) => i.severity === 'high').length,
-    medium: indicators.filter((i) => i.severity === 'medium').length,
-    low: indicators.filter((i) => i.severity === 'low').length,
+    critical: indicators.filter((i) => i.severity === "critical").length,
+    high: indicators.filter((i) => i.severity === "high").length,
+    medium: indicators.filter((i) => i.severity === "medium").length,
+    low: indicators.filter((i) => i.severity === "low").length,
     byType: {
-      ip: indicators.filter((i) => i.type === 'ip').length,
-      domain: indicators.filter((i) => i.type === 'domain').length,
-      hash: indicators.filter((i) => i.type === 'hash').length,
-      url: indicators.filter((i) => i.type === 'url').length,
+      ip: indicators.filter((i) => i.type === "ip").length,
+      domain: indicators.filter((i) => i.type === "domain").length,
+      hash: indicators.filter((i) => i.type === "hash").length,
+      url: indicators.filter((i) => i.type === "url").length,
     },
   };
   res.json(stats);
@@ -116,15 +141,17 @@ app.get('/api/stats', (_req, res) => {
  *
  * Creates a new indicator.
  */
-app.post('/api/indicators', (req, res) => {
+app.post("/api/indicators", (req, res) => {
   const indicator = req.body;
   indicators.push(indicator);
   res.status(201).json(indicator);
 });
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== "production") {
   app.listen(PORT, () => {
-    console.log(`\n  🛡  Mock Threat Intel API running at http://localhost:${PORT}`);
+    console.log(
+      `\n  🛡  Mock Threat Intel API running at http://localhost:${PORT}`,
+    );
     console.log(`  📊 ${indicators.length} indicators loaded\n`);
   });
 }
