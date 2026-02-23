@@ -1,14 +1,20 @@
 // @ts-ignore
 import { sources } from "../../server/data";
+import { IndicatorFormState } from "../hooks/useIndicators";
 import { Source } from "../types/indicator";
-import { useIndicatorForm } from "../hooks";
 
 interface IndicatorFormProps {
   closeModal: (action: string) => void;
+  form: IndicatorFormState;
+  updateForm: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
-const IndicatorForm: React.FC<IndicatorFormProps> = ({ closeModal }) => {
-  const { form, updateForm, handleSubmit } = useIndicatorForm(closeModal);
-
+const IndicatorForm: React.FC<IndicatorFormProps> = ({
+  form,
+  updateForm,
+  handleSubmit,
+  closeModal,
+}) => {
   return (
     <form className="mt-6" onSubmit={handleSubmit}>
       <fieldset className="flex flex-col gap-2 mb-4">

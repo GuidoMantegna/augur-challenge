@@ -1,9 +1,21 @@
-import TableRow from "./TableRow";
-import Toolbar from "./Toolbar";
-import Pagination from "./Pagination";
 import DetailSection from "./DetailSection";
+import Header from "./Header";
+import IndicatorForm from "./IndicatorForm";
+import Modal from "./Modal";
+import Pagination from "./Pagination";
 import Sidebar from "./Sidebar";
 import StatCard from "./StatCard";
-import Header from "./Header";
+import TableRow from "./TableRow";
+import Toolbar from "./Toolbar";
 
-export { TableRow, Toolbar, Pagination, DetailSection, Sidebar, StatCard, Header };
+export {
+  DetailSection,
+  Header,
+  IndicatorForm,
+  Modal,
+  Pagination,
+  Sidebar,
+  StatCard,
+  TableRow,
+  Toolbar,
+};

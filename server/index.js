@@ -147,6 +147,17 @@ app.post("/api/indicators", (req, res) => {
   res.status(201).json(indicator);
 });
 
+/**
+ * DELETE /api/indicators/:id
+ *
+ * Deletes an indicator by ID.
+ */
+app.delete("/api/indicators/:id", (req, res) => {
+  const indicatorIndex = indicators.findIndex((i) => i.id === req.params.id);
+  indicators.splice(indicatorIndex, 1);
+  res.sendStatus(204);
+})
+
 if (process.env.NODE_ENV !== "production") {
   app.listen(PORT, () => {
     console.log(
