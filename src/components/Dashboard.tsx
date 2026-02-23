@@ -8,10 +8,12 @@ import {
   Sidebar,
   StatCard,
   Header,
+  IndicatorForm,
+  Modal,
 } from ".";
 import { ToastContainer } from "react-toastify";
 // HOOKS
-import { useStats, useFilters } from "../hooks";
+import { useStats, useFilters, useIndicators } from "../hooks";
 // TYPES
 import { Indicator } from "../types/indicator";
 
@@ -28,17 +30,67 @@ const Dashboard: React.FC = () => {
     fetchFilters,
   } = useFilters();
   const [details, setDetails] = useState<Indicator | null>(null);
+  const [isOpen, setIsOpen] = useState<string | boolean>(false);
+  const closeModal = (action: string) => {
+    setIsOpen(false);
+    if (action === "submit") {
+      fetchStats();
+      fetchFilters();
+    }
+  };
+  const { deleteIndicator, form, updateForm, handleSubmit } =
+    useIndicators(closeModal);
 
   return (
     <>
+      {/* Toasts */}
       <ToastContainer theme="dark" />
+      {/* MODAL */}
+      <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+        {isOpen === "delete" && (
+          <>
+            <h2 className="modal-header">Are you sure you want to delete?</h2>
+            <fieldset className="flex gap-2 mt-8">
+              <button
+                className="btn btn-secondary w-full justify-center"
+                type="button"
+                onClick={() => closeModal("cancel")}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary w-full justify-center"
+                type="submit"
+                data-testid="add-indicator-button"
+                onClick={() => {
+                  deleteIndicator(details?.id || "");
+                  setDetails(null);
+                }}
+              >
+                Delete
+              </button>
+            </fieldset>
+          </>
+        )}
+        {isOpen === "add" && (
+          <>
+            <h2 className="modal-header">Add Indicator</h2>
+            <IndicatorForm
+              form={form}
+              updateForm={updateForm}
+              handleSubmit={handleSubmit}
+              closeModal={closeModal}
+            />
+          </>
+        )}
+      </Modal>
       <div className="app-layout">
         {/* SIDEBAR */}
         <Sidebar />
         {/* MAIN CONTENT */}
         <main className="main-content">
           {/* PAGE HEADER */}
-          <Header fetchFilters={fetchFilters} fetchStats={fetchStats} />
+          <Header openModal={() => setIsOpen("add")} />
           {/* STATS */}
           <section className="stats-row">
             <StatCard
@@ -158,7 +210,10 @@ const Dashboard: React.FC = () => {
                     ✕
                   </button>
                 </div>
-                <DetailSection details={details} />
+                <DetailSection
+                  details={details}
+                  openDeleteModal={() => setIsOpen("delete")}
+                />
               </aside>
             )}
           </div>

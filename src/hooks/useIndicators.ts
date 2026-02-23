@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { IndicatorType, Severity, Source } from "../types/indicator";
-import { apiRequest } from "../api/apiClient";
+import { IndicatorType, Severity, Source } from "../types/indicator.js";
+import { apiRequest } from "../api/apiClient.js";
 // @ts-ignore
 import { confidenceForSeverity } from "../../server/data.js";
 // @ts-ignore
@@ -9,7 +9,7 @@ import { uuid } from "../../server/data.js";
 import { randomDate } from "../../server/data.js";
 import { toast } from "react-toastify";
 
-interface IndicatorFormProps {
+export interface IndicatorFormState {
   source: Source | "";
   type: IndicatorType | "";
   value: string;
@@ -17,8 +17,8 @@ interface IndicatorFormProps {
   tags: string[];
 }
 
-export const useIndicatorForm = (cancel: (action: string) => void) => {
-  const [form, setForm] = useState<IndicatorFormProps>({
+export const useIndicators = (cancel: (action: string) => void) => {
+  const [form, setForm] = useState<IndicatorFormState>({
     source: "",
     type: "",
     value: "",
@@ -43,7 +43,10 @@ export const useIndicatorForm = (cancel: (action: string) => void) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!areFieldFull) {
-      toast("All fields are required", { type: "error", toastId: "indicator-error" });
+      toast("All fields are required", {
+        type: "error",
+        toastId: "indicator-error",
+      });
       return;
     }
     const indicator = {
@@ -67,8 +70,30 @@ export const useIndicatorForm = (cancel: (action: string) => void) => {
     cancel("submit");
   };
 
+  const deleteIndicator = async (id: string) => {
+    await apiRequest({
+      method: "delete",
+      url: `/api/indicators/${id}`,
+      setLoading: () => {},
+      setError: () => {},
+    });
+    toast("Indicator successfully deleted", {
+      type: "success",
+      toastId: "indicator-delete",
+    });
+    cancel("submit");
+  };
+
   const areFieldFull =
     form.source && form.type && form.value && form.severity && form.tags.length;
 
-  return { form, updateForm, handleSubmit, areFieldFull, loading, error };
+  return {
+    form,
+    updateForm,
+    handleSubmit,
+    areFieldFull,
+    loading,
+    error,
+    deleteIndicator,
+  };
 };

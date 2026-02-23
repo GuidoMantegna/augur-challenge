@@ -3,9 +3,10 @@ import { timeAgoHM } from "../utils";
 
 interface DetailSectionProps {
   details: Indicator | null;
+  openDeleteModal: () => void;
 }
 
-const DetailSection: React.FC<DetailSectionProps> = ({ details }) => (
+const DetailSection: React.FC<DetailSectionProps> = ({ details, openDeleteModal }) => (
   <div className="detail-body">
     <div className="detail-section">
       <div className="detail-section-label">Value</div>
@@ -141,10 +142,10 @@ const DetailSection: React.FC<DetailSectionProps> = ({ details }) => (
     </div>
     <div style={{ marginTop: "var(--sp-6)", display: "flex", gap: "8px" }}>
       <button className="btn btn-secondary btn-sm" style={{ flex: 1 }}>
-        Investigate
+        Edit
       </button>
-      <button className="btn btn-danger btn-sm" style={{ flex: 1 }}>
-        Block
+      <button className="btn btn-danger btn-sm" style={{ flex: 1 }} onClick={openDeleteModal}>
+        Delete
       </button>
     </div>
   </div>

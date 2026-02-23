@@ -39,7 +39,7 @@ function Portal({ children, containerId = "portal-root" }: PortalProps) {
 }
 
 interface ModalProps {
-  open: boolean;
+  open: boolean | string;
   onClose: () => void;
   children: React.ReactNode;
 }

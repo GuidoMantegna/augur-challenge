@@ -1,5 +1,5 @@
 import { useFilters } from "./useFilters";
 import { useStats } from "./useStats";
-import { useIndicatorForm } from "./useIndicatorForm";
+import { useIndicators } from "./useIndicators";
 
-export { useFilters, useStats, useIndicatorForm };
+export { useFilters, useStats, useIndicators };
