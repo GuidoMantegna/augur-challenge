@@ -1,5 +1,5 @@
 import { Indicator } from "../types/indicator";
-import { timeAgoHM } from "../utils";
+import { timeAgoHM, randomTagColor } from "../utils";
 
 const LoadingRow: React.FC = () => {
   return (
@@ -90,7 +90,7 @@ const TableRow: React.FC<TableRowProps> = ({
       <td className="td-source">{source}</td>
       <td className="td-tags">
         {tags.map((tag) => (
-          <span key={tag} className="tag tag-red">
+          <span key={tag} className={`tag tag-${randomTagColor()}`}>
             {tag}
           </span>
         ))}

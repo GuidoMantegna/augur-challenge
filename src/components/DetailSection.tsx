@@ -1,6 +1,6 @@
 import { SetStateAction } from "react";
 import { Indicator } from "../types/indicator";
-import { timeAgoHM } from "../utils";
+import { randomTagColor, timeAgoHM } from "../utils";
 import { IndicatorFormState } from "../hooks/useIndicators";
 
 interface DetailSectionProps {
@@ -92,13 +92,10 @@ const DetailSection: React.FC<DetailSectionProps> = ({
           }}
         >
           {details?.tags?.map((tag) => (
-            <span className={`tag tag-blue`} key={tag}>
+            <span className={`tag tag-${randomTagColor()}`} key={tag}>
               {tag}
             </span>
           ))}
-          {/* <span className="tag tag-red">tor-exit</span>
-        <span className="tag tag-red">botnet</span>
-        <span className="tag tag-blue">scanner</span> */}
         </div>
       </div>
       <div className="detail-section">

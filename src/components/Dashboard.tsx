@@ -39,8 +39,7 @@ const Dashboard: React.FC = () => {
       isOpen !== "add" && setDetails(null);
     }
   };
-  const { form, updateForm, handleSubmit, setForm } =
-    useIndicators(closeModal);
+  const { form, updateForm, handleSubmit, setForm } = useIndicators(closeModal);
 
   return (
     <>
@@ -50,11 +49,17 @@ const Dashboard: React.FC = () => {
       <Modal open={isOpen} onClose={() => setIsOpen(false)}>
         {(isOpen === "add" || isOpen === "edit" || isOpen === "delete") && (
           <>
-            <h2 className="modal-header">{{
-              add: "Add Indicator",
-              edit: "Edit Indicator",
-              delete: "Are you sure you want to delete this indicator?",
-            }[isOpen]}</h2>
+            <div className="modal-header">
+              <h2>
+                {
+                  {
+                    add: "Add Indicator",
+                    edit: "Edit Indicator",
+                    delete: "Are you sure you want to delete this indicator?",
+                  }[isOpen]
+                }
+              </h2>
+            </div>
             <IndicatorForm
               form={form}
               updateForm={updateForm}
@@ -179,25 +184,28 @@ const Dashboard: React.FC = () => {
             </div>
 
             {/* Detail Panel */}
-            {details && (
-              <aside className="detail-panel" style={{ flexShrink: 0 }}>
-                <div className="detail-header">
-                  <h3>Indicator Details</h3>
-                  <button
-                    className="btn btn-ghost btn-sm"
-                    style={{ fontSize: "16px" }}
-                    onClick={() => setDetails(null)}
-                  >
-                    ✕
-                  </button>
-                </div>
-                <DetailSection
-                  details={details}
-                  openModal={setIsOpen}
-                  setForm={setForm}
-                />
-              </aside>
-            )}
+            <aside
+              className={`
+                detail-panel 
+                ${!details ? "translate-x-[100%]" : "translate-x-0"}
+                transition-transform duration-200 ease-in-out animate ease-in-out`}
+            >
+              <div className="detail-header">
+                <h3>Indicator Details</h3>
+                <button
+                  className="btn btn-ghost btn-sm"
+                  style={{ fontSize: "16px" }}
+                  onClick={() => setDetails(null)}
+                >
+                  ✕
+                </button>
+              </div>
+              <DetailSection
+                details={details}
+                openModal={setIsOpen}
+                setForm={setForm}
+              />
+            </aside>
           </div>
         </main>
       </div>
