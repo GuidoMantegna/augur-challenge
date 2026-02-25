@@ -4,19 +4,21 @@ import { IndicatorFormState } from "../hooks/useIndicators";
 import { Source } from "../types/indicator";
 
 interface IndicatorFormProps {
-  closeModal: (action: string) => void;
+  closeModal: () => void;
   form: IndicatorFormState;
   updateForm: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>, action: string) => void;
+  action: "add" | "edit" | "delete";
 }
 const IndicatorForm: React.FC<IndicatorFormProps> = ({
   form,
   updateForm,
   handleSubmit,
   closeModal,
+  action,
 }) => {
   return (
-    <form className="mt-6" onSubmit={handleSubmit}>
+    <form className="mt-6" onSubmit={e => handleSubmit(e, action)}>
       <fieldset className="flex flex-col gap-2 mb-4">
         <label htmlFor="indicator" className="text-[var(--text-secondary)]">
           Indicator
@@ -29,6 +31,7 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           placeholder="Indicator ID"
           value={form.value}
           onChange={updateForm}
+          disabled={action === "delete"}
         />
       </fieldset>
       <fieldset className="flex flex-col gap-2 mb-4">
@@ -41,6 +44,7 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           data-testid="types-select"
           value={form.type}
           onChange={updateForm}
+          disabled={action === "delete"}
         >
           <option value="" disabled hidden>
             -- Select a type --
@@ -69,6 +73,7 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           data-testid="severity-select"
           value={form.severity}
           onChange={updateForm}
+          disabled={action === "delete"}
         >
           <option value="" disabled hidden>
             -- Select a severity --
@@ -97,6 +102,7 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           data-testid="sources-select"
           value={form.source}
           onChange={updateForm}
+          disabled={action === "delete"}
         >
           <option value="" disabled hidden>
             -- Select a source --
@@ -125,23 +131,28 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           placeholder="tag1,tag2,tag3..."
           value={form.tags}
           onChange={updateForm}
+          disabled={action === "delete"}
         />
       </fieldset>
       <fieldset className="flex gap-2 mt-8">
         <button
           className="btn btn-secondary w-full justify-center"
           type="button"
-          onClick={() => closeModal("cancel")}
+          onClick={closeModal}
         >
           Cancel
         </button>
         <button
-          className="btn btn-primary w-full justify-center"
+          className={`btn btn-${action === "delete" ? "danger" : "primary"} w-full justify-center`}
           type="submit"
           data-testid="add-indicator-button"
           // disabled={!areFieldFull}
         >
-          + Add Indicator
+          {{
+            add: "+ Add",
+            edit: "/ Edit",
+            delete: "- Delete",
+          }[action]} Indicator
         </button>
       </fieldset>
     </form>
