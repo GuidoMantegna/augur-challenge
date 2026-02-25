@@ -324,6 +324,11 @@ body {
   white-space: nowrap;
 }
 
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .btn-primary {
   background: var(--augur-blue);
   color: white;
@@ -387,6 +392,13 @@ body {
 .input:focus {
   border-color: var(--augur-blue);
   box-shadow: 0 0 0 2px var(--augur-blue-dim);
+}
+
+.input:disabled, select:disabled {
+  background: var(--bg-disabled);
+  border-color: var(--border-subtle);
+  color: var(--text-muted);
+  cursor: not-allowed;
 }
 
 .input::placeholder { color: var(--text-tertiary); }
