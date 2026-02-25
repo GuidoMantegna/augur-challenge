@@ -149,9 +149,9 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           // disabled={!areFieldFull}
         >
           {{
-            add: "+ Add",
-            edit: "/ Edit",
-            delete: "- Delete",
+            add: "Add",
+            edit: "Edit",
+            delete: "Delete",
           }[action]} Indicator
         </button>
       </fieldset>

@@ -84,3 +84,12 @@ export function getPageNumbers(current: number, total: number): (number | "...")
 
   return pages;
 }
+
+/**
+ * Returns a random tag color from a predefined list of colors.
+ * @returns A random tag color from the list ["red", "blue", "purple", "teal", "gray"].
+ */
+export const randomTagColor = () => {
+  const colors = ["red", "blue", "purple", "teal", "gray"];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
