@@ -158,6 +158,18 @@ app.delete("/api/indicators/:id", (req, res) => {
   res.sendStatus(204);
 })
 
+/**
+ * PUT /api/indicators/:id
+ *
+ * Updates an indicator by ID.
+ */
+app.put("/api/indicators", (req, res) => {
+  const indicatorIndex = indicators.findIndex((i) => i.id === req.body.id);
+  indicators[indicatorIndex] = {...indicators[indicatorIndex], ...req.body};
+  res.status(200).json(indicators[indicatorIndex]);
+
+})
+
 if (process.env.NODE_ENV !== "production") {
   app.listen(PORT, () => {
     console.log(

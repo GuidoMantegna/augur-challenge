@@ -31,14 +31,15 @@ const Dashboard: React.FC = () => {
   } = useFilters();
   const [details, setDetails] = useState<Indicator | null>(null);
   const [isOpen, setIsOpen] = useState<string | boolean>(false);
-  const closeModal = (action: string) => {
+  const closeModal = () => {
     setIsOpen(false);
-    if (action === "submit") {
+    if (isOpen) {
       fetchStats();
       fetchFilters();
+      isOpen !== "add" && setDetails(null);
     }
   };
-  const { deleteIndicator, form, updateForm, handleSubmit } =
+  const { form, updateForm, handleSubmit, setForm } =
     useIndicators(closeModal);
 
   return (
@@ -47,39 +48,19 @@ const Dashboard: React.FC = () => {
       <ToastContainer theme="dark" />
       {/* MODAL */}
       <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-        {isOpen === "delete" && (
+        {(isOpen === "add" || isOpen === "edit" || isOpen === "delete") && (
           <>
-            <h2 className="modal-header">Are you sure you want to delete?</h2>
-            <fieldset className="flex gap-2 mt-8">
-              <button
-                className="btn btn-secondary w-full justify-center"
-                type="button"
-                onClick={() => closeModal("cancel")}
-              >
-                Cancel
-              </button>
-              <button
-                className="btn btn-primary w-full justify-center"
-                type="submit"
-                data-testid="add-indicator-button"
-                onClick={() => {
-                  deleteIndicator(details?.id || "");
-                  setDetails(null);
-                }}
-              >
-                Delete
-              </button>
-            </fieldset>
-          </>
-        )}
-        {isOpen === "add" && (
-          <>
-            <h2 className="modal-header">Add Indicator</h2>
+            <h2 className="modal-header">{{
+              add: "Add Indicator",
+              edit: "Edit Indicator",
+              delete: "Are you sure you want to delete this indicator?",
+            }[isOpen]}</h2>
             <IndicatorForm
               form={form}
               updateForm={updateForm}
               handleSubmit={handleSubmit}
-              closeModal={closeModal}
+              closeModal={() => setIsOpen(false)}
+              action={isOpen}
             />
           </>
         )}
@@ -212,7 +193,8 @@ const Dashboard: React.FC = () => {
                 </div>
                 <DetailSection
                   details={details}
-                  openDeleteModal={() => setIsOpen("delete")}
+                  openModal={setIsOpen}
+                  setForm={setForm}
                 />
               </aside>
             )}

@@ -15,15 +15,17 @@ export interface IndicatorFormState {
   value: string;
   severity: Severity | "";
   tags: string[];
+  id?: string;
 }
 
-export const useIndicators = (cancel: (action: string) => void) => {
+export const useIndicators = (cancel: () => void) => {
   const [form, setForm] = useState<IndicatorFormState>({
     source: "",
     type: "",
     value: "",
     severity: "",
     tags: [],
+    id: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,8 +42,18 @@ export const useIndicators = (cancel: (action: string) => void) => {
     });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, action: string) => {
     e.preventDefault();
+    if(["add", "edit"].includes(action)) await addIndicator(action);
+    if(action === "delete") await deleteIndicator();
+    cancel();
+    toast("Indicator successfully added", {
+      type: "success",
+      toastId: "indicator-success",
+    });
+  };
+  
+  const addIndicator = async (action: string) => {
     if (!areFieldFull) {
       toast("All fields are required", {
         type: "error",
@@ -51,37 +63,26 @@ export const useIndicators = (cancel: (action: string) => void) => {
     }
     const indicator = {
       ...form,
-      id: uuid(),
+      id: action === "edit" ? form.id : uuid(),
       firstSeen: new Date().toISOString(),
       lastSeen: randomDate(7),
       confidence: confidenceForSeverity(form.severity),
     };
     await apiRequest({
-      method: "post",
+      method: action === "edit" ? "put" : "post",
       url: "/api/indicators",
       data: indicator,
       setLoading,
       setError,
     });
-    toast("Indicator successfully added", {
-      type: "success",
-      toastId: "indicator-success",
-    });
-    cancel("submit");
   };
-
-  const deleteIndicator = async (id: string) => {
+  const deleteIndicator = async () => {
     await apiRequest({
       method: "delete",
-      url: `/api/indicators/${id}`,
-      setLoading: () => {},
-      setError: () => {},
+      url: `/api/indicators/${form.id}`,
+      setLoading,
+      setError,
     });
-    toast("Indicator successfully deleted", {
-      type: "success",
-      toastId: "indicator-delete",
-    });
-    cancel("submit");
   };
 
   const areFieldFull =
@@ -95,5 +96,6 @@ export const useIndicators = (cancel: (action: string) => void) => {
     loading,
     error,
     deleteIndicator,
+    setForm,
   };
 };
