@@ -36,7 +36,7 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <div className="pagination">
       <span className="pagination-info">
-        Showing 1-20 of {data.total} indicators
+        Showing 1-{data.total / data.totalPages} of {data.total} indicators
       </span>
       <div className="pagination-controls">
         <button

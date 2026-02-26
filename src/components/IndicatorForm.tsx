@@ -146,7 +146,6 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           className={`btn btn-${action === "delete" ? "danger" : "primary"} w-full justify-center`}
           type="submit"
           data-testid="add-indicator-button"
-          // disabled={!areFieldFull}
         >
           {{
             add: "Add",
