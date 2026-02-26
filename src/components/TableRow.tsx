@@ -1,34 +1,29 @@
 import { Indicator } from "../types/indicator";
 import { timeAgoHM, randomTagColor } from "../utils";
 
+const SKELETON =
+  "w-full h-[20px] bg-[var(--border-default)] rounded animate-pulse";
 const LoadingRow: React.FC = () => {
   return (
     <>
-      {/* <td className="td-checkbox"></td> */}
-      <td>
-        <div className="w-full h-[20px] bg-[var(--border-default)] rounded animate-pulse"></div>
-      </td>
-      <td>
-        <div className="w-full h-[20px] bg-[var(--border-default)] rounded animate-pulse"></div>
-      </td>
-      <td>
-        <div className="w-full h-[20px] bg-[var(--border-default)] rounded animate-pulse"></div>
-      </td>
-      <td>
-        <div className="w-full h-[20px] bg-[var(--border-default)] rounded animate-pulse"></div>
-      </td>
-      <td>
-        <div className="w-full h-[20px] bg-[var(--border-default)] rounded animate-pulse"></div>
-      </td>
-      <td>
-        <div className="w-full h-[20px] bg-[var(--border-default)] rounded animate-pulse"></div>
-      </td>
-      <td>
-        <div className="w-full h-[20px] bg-[var(--border-default)] rounded animate-pulse"></div>
-      </td>
+      {[
+        "td-checkbox",
+        "td-indicator",
+        "td-type",
+        "td-severity",
+        "td-confidence",
+        "td-source",
+        "td-tags",
+        "td-time",
+      ].map((className) => (
+        <td key={className}>
+          <div className={`${className} ${SKELETON}`}></div>
+        </td>
+      ))}
     </>
   );
 };
+
 interface TableRowProps extends Indicator {
   // selected: boolean;
   loading: boolean;

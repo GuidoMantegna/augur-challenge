@@ -147,7 +147,7 @@ body {
 .app-layout {
   display: grid;
   grid-template-columns: var(--sidebar-width) 1fr;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 /* SIDEBAR */
