@@ -222,8 +222,16 @@ describe("useFilters", () => {
 
       await waitFor(() => expect(result.current.data.data.length).toBe(3));
 
+      const mockEvent = {
+        currentTarget: {
+          dataset: {
+            sortid: "indicator",
+          },
+        },
+      } as unknown as React.MouseEvent<HTMLHeadingElement, MouseEvent>;
+
       act(() => {
-        result.current.handleSorting();
+        result.current.handleSorting(mockEvent);
       });
 
       // Should be sorted Z-A
@@ -232,7 +240,7 @@ describe("useFilters", () => {
       expect(result.current.data.data[2]?.value).toBe("a-indicator");
       
       act(() => {
-        result.current.handleSorting();
+        result.current.handleSorting(mockEvent);
       });
       
       // Should be sorted A-Z
