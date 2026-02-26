@@ -106,6 +106,24 @@ const Toolbar: React.FC<ToolbarProps> = ({
           ))}
         </select>
       </div>
+      <div className="toolbar-divider"></div>
+          <select
+            className="select"
+            name="limit"
+            onChange={handleFilterChange}
+            value={filters.limit}
+            data-testid="limit-select"
+            >
+              {["10", "20", "50", "100"].map((limit) => (
+                <option
+                  key={limit}
+                  value={limit}
+                  data-testid={`limit-option-${limit}`}
+                >
+                  {limit} rows
+                </option>
+              ))}
+            </select>
       <div style={{ marginLeft: "auto" }}>
         <button
           className="btn btn-ghost btn-sm"
