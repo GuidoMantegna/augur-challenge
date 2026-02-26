@@ -1,12 +1,30 @@
-// @ts-ignore
-import { sources } from "../../server/data";
 import { IndicatorFormState } from "../hooks/useIndicators";
 import { Source } from "../types/indicator";
+import { SELECT_OPTIONS } from "../utils";
+
+const FieldSet: React.FC<{
+  label: string;
+  children: React.ReactNode;
+}> = ({ label, children }) => {
+  return (
+    <fieldset className="flex flex-col gap-2 mb-4">
+      <label
+        htmlFor={label.toLocaleLowerCase()}
+        className="text-[var(--text-secondary)]"
+      >
+        {label}
+      </label>
+      {children}
+    </fieldset>
+  );
+};
 
 interface IndicatorFormProps {
   closeModal: () => void;
   form: IndicatorFormState;
-  updateForm: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  updateForm: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => void;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>, action: string) => void;
   action: "add" | "edit" | "delete";
 }
@@ -18,11 +36,8 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
   action,
 }) => {
   return (
-    <form className="mt-6" onSubmit={e => handleSubmit(e, action)}>
-      <fieldset className="flex flex-col gap-2 mb-4">
-        <label htmlFor="indicator" className="text-[var(--text-secondary)]">
-          Indicator
-        </label>
+    <form className="mt-6" onSubmit={(e) => handleSubmit(e, action)}>
+      <FieldSet label="Indicator">
         <input
           type="text"
           name="value"
@@ -33,11 +48,8 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           onChange={updateForm}
           disabled={action === "delete"}
         />
-      </fieldset>
-      <fieldset className="flex flex-col gap-2 mb-4">
-        <label htmlFor="type" className="text-[var(--text-secondary)]">
-          Type
-        </label>
+      </FieldSet>
+      <FieldSet label="Type">
         <select
           className="select"
           name="type"
@@ -46,27 +58,20 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           onChange={updateForm}
           disabled={action === "delete"}
         >
-          <option value="" disabled hidden>
+          <option disabled hidden>
             -- Select a type --
           </option>
-          <option value="ip" data-testid="type-option-ip">
-            IP Address
-          </option>
-          <option value="domain" data-testid="type-option-domain">
-            Domain
-          </option>
-          <option value="hash" data-testid="type-option-hash">
-            File Hash
-          </option>
-          <option value="url" data-testid="type-option-url">
-            URL
-          </option>
+          {SELECT_OPTIONS.types.map((type: string) => (
+            <option
+              key={type}
+              data-testid={`type-option-${type.toLocaleLowerCase()}`}
+            >
+              {type}
+            </option>
+          ))}
         </select>
-      </fieldset>
-      <fieldset className="flex flex-col gap-2 mb-4">
-        <label htmlFor="severity" className="text-[var(--text-secondary)]">
-          Severity
-        </label>
+      </FieldSet>
+      <FieldSet label="Severity">
         <select
           className="select"
           name="severity"
@@ -75,27 +80,20 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           onChange={updateForm}
           disabled={action === "delete"}
         >
-          <option value="" disabled hidden>
+          <option disabled hidden>
             -- Select a severity --
           </option>
-          <option value="critical" data-testid="severity-option-critical">
-            Critical
-          </option>
-          <option value="high" data-testid="severity-option-high">
-            High
-          </option>
-          <option value="medium" data-testid="severity-option-medium">
-            Medium
-          </option>
-          <option value="low" data-testid="severity-option-low">
-            Low
-          </option>
+          {SELECT_OPTIONS.severities.map((severity: string) => (
+            <option
+              key={severity}
+              data-testid={`severity-option-${severity.toLocaleLowerCase()}`}
+            >
+              {severity}
+            </option>
+          ))}
         </select>
-      </fieldset>
-      <fieldset className="flex flex-col gap-2 mb-4">
-        <label htmlFor="source" className="text-[var(--text-secondary)]">
-          Source
-        </label>
+      </FieldSet>
+      <FieldSet label="Source">
         <select
           className="select"
           name="source"
@@ -104,36 +102,29 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           onChange={updateForm}
           disabled={action === "delete"}
         >
-          <option value="" disabled hidden>
+          <option disabled hidden>
             -- Select a source --
           </option>
-          {sources.map((source: Source) => (
-            <option
-              key={source}
-              value={source}
-              data-testid={`source-option-${source}`}
-            >
+          {SELECT_OPTIONS.sources.map((source: Source) => (
+            <option key={source} data-testid={`source-option-${source}`}>
               {source}
             </option>
           ))}
         </select>
-      </fieldset>
-      <fieldset className="flex flex-col gap-2 mb-4">
-        <label htmlFor="tags" className="text-[var(--text-secondary)]">
-          Tags
-        </label>
+      </FieldSet>
+      <FieldSet label="Tags">
         <input
           type="text"
           name="tags"
           id="tags"
           className="input"
-          data-testid="confidence-input"
+          data-testid="tags-input"
           placeholder="tag1,tag2,tag3..."
           value={form.tags}
           onChange={updateForm}
           disabled={action === "delete"}
         />
-      </fieldset>
+      </FieldSet>
       <fieldset className="flex gap-2 mt-8">
         <button
           className="btn btn-secondary w-full justify-center"
@@ -147,11 +138,14 @@ const IndicatorForm: React.FC<IndicatorFormProps> = ({
           type="submit"
           data-testid="add-indicator-button"
         >
-          {{
-            add: "Add",
-            edit: "Edit",
-            delete: "Delete",
-          }[action]} Indicator
+          {
+            {
+              add: "Add",
+              edit: "Edit",
+              delete: "Delete",
+            }[action]
+          }{" "}
+          Indicator
         </button>
       </fieldset>
     </form>

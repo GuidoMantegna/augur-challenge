@@ -3,6 +3,7 @@ import { Filters } from "../hooks/useFilters";
 // @ts-ignore
 import { sources } from "../../server/data";
 import { Source } from "../types/indicator";
+import { SELECT_OPTIONS } from "../utils";
 
 interface ToolbarProps {
   handleFilterChange: (
@@ -49,21 +50,11 @@ const Toolbar: React.FC<ToolbarProps> = ({
           value={filters.severity}
           data-testid="severity-select"
         >
-          <option value="all" data-testid="severity-option-all">
-            All Severities
-          </option>
-          <option value="critical" data-testid="severity-option-critical">
-            Critical
-          </option>
-          <option value="high" data-testid="severity-option-high">
-            High
-          </option>
-          <option value="medium" data-testid="severity-option-medium">
-            Medium
-          </option>
-          <option value="low" data-testid="severity-option-low">
-            Low
-          </option>
+          {["All Severities", ...SELECT_OPTIONS.severities].map((severity) => (
+            <option key={severity} data-testid={`severity-option-${severity}`}>
+              {severity}
+            </option>
+          ))}
         </select>
         <select
           className="select"
@@ -72,21 +63,11 @@ const Toolbar: React.FC<ToolbarProps> = ({
           value={filters.type}
           data-testid="types-select"
         >
-          <option value="all" data-testid="type-option-all">
-            All Types
-          </option>
-          <option value="ip" data-testid="type-option-ip">
-            IP Address
-          </option>
-          <option value="domain" data-testid="type-option-domain">
-            Domain
-          </option>
-          <option value="hash" data-testid="type-option-hash">
-            File Hash
-          </option>
-          <option value="url" data-testid="type-option-url">
-            URL
-          </option>
+          {["All Types", ...SELECT_OPTIONS.types].map((type) => (
+            <option key={type} data-testid={`type-option-${type}`}>
+              {type}
+            </option>
+          ))}
         </select>
         <select
           className="select"
@@ -95,35 +76,31 @@ const Toolbar: React.FC<ToolbarProps> = ({
           value={filters.source}
           data-testid="sources-select"
         >
-          {["All Sources", ...sources].map((source: Source) => (
-            <option
-              key={source}
-              value={source}
-              data-testid={`source-option-${source}`}
-            >
+          {["All Sources", ...SELECT_OPTIONS.sources].map((source: Source) => (
+            <option key={source} data-testid={`source-option-${source}`}>
               {source}
             </option>
           ))}
         </select>
       </div>
       <div className="toolbar-divider"></div>
-          <select
-            className="select"
-            name="limit"
-            onChange={handleFilterChange}
-            value={filters.limit}
-            data-testid="limit-select"
-            >
-              {["10", "20", "50", "100"].map((limit) => (
-                <option
-                  key={limit}
-                  value={limit}
-                  data-testid={`limit-option-${limit}`}
-                >
-                  {limit} rows
-                </option>
-              ))}
-            </select>
+      <select
+        className="select"
+        name="limit"
+        onChange={handleFilterChange}
+        value={filters.limit}
+        data-testid="limit-select"
+      >
+        {["10", "20", "50", "100"].map((limit) => (
+          <option
+            key={limit}
+            value={limit}
+            data-testid={`limit-option-${limit}`}
+          >
+            {limit} rows
+          </option>
+        ))}
+      </select>
       <div style={{ marginLeft: "auto" }}>
         <button
           className="btn btn-ghost btn-sm"

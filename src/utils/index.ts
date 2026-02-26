@@ -1,3 +1,6 @@
+// @ts-ignore
+import { sources } from "../../server/data";
+
 /**
  * Returns a human-readable string representing the time elapsed
  * since the given ISO string timestamp.
@@ -92,4 +95,10 @@ export function getPageNumbers(current: number, total: number): (number | "...")
 export const randomTagColor = () => {
   const colors = ["red", "blue", "purple", "teal", "gray"];
   return colors[Math.floor(Math.random() * colors.length)];
+}
+
+export const SELECT_OPTIONS = {
+  severities: ["Critical", "High", "Medium", "Low"],
+  types: ["IP Address", "Domain", "File Hash", "URL"],
+  sources,
 }
