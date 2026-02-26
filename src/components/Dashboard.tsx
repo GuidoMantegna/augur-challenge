@@ -159,28 +159,38 @@ const Dashboard: React.FC = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.data.map((row) => (
-                      <tr
-                        key={row.id}
-                        className={details?.id === row.id ? "selected" : ""}
-                        onClick={() => setDetails(row)}
-                        data-testid="table-row"
-                      >
-                        <TableRow
-                          {...row}
-                          selected={details?.id === row.id}
-                          loading={indicatorsLoading}
-                        />
+                    {data.data.length === 0 ? (
+                      <tr>
+                        <td colSpan={8} className="text-center">
+                          No indicators found
+                        </td>
                       </tr>
-                    ))}
+                    ) : (
+                      data.data.map((row) => (
+                        <tr
+                          key={row.id}
+                          className={details?.id === row.id ? "selected" : ""}
+                          onClick={() => setDetails(row)}
+                          data-testid="table-row"
+                        >
+                          <TableRow
+                            {...row}
+                            selected={details?.id === row.id}
+                            loading={indicatorsLoading}
+                          />
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
               {/* Pagination */}
-              <Pagination
-                handlePaginationChange={handlePaginationChange}
-                data={data}
-              />
+              {data.totalPages > 0 && (
+                <Pagination
+                  handlePaginationChange={handlePaginationChange}
+                  data={data}
+                />
+              )}
             </div>
 
             {/* Detail Panel */}

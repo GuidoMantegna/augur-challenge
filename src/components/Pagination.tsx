@@ -40,7 +40,7 @@ const Pagination: React.FC<PaginationProps> = ({
       </span>
       <div className="pagination-controls">
         <button
-          className="pagination-btn"
+          className="btn pagination-btn"
           data-dir="prev"
           onClick={handlePaginationChange}
           disabled={data.page === 1}
@@ -62,7 +62,7 @@ const Pagination: React.FC<PaginationProps> = ({
           ))}
         </ul>
         <button
-          className="pagination-btn"
+          className="btn pagination-btn"
           data-dir="next"
           onClick={handlePaginationChange}
           disabled={data.page === data.totalPages}
