@@ -38,6 +38,8 @@ app.get("/api/indicators", (req, res) => {
   const type = req.query.type?.toLowerCase();
   const source = req.query.source;
   const search = req.query.search?.toLowerCase();
+  const sort = req.query.sort;
+  const order = req.query.order;
 
   let filtered = [...indicators];
 
@@ -59,6 +61,22 @@ app.get("/api/indicators", (req, res) => {
         i.value.toLowerCase().includes(search) ||
         i.source.toLowerCase().includes(search) ||
         i.tags.some((t) => t.toLowerCase().includes(search)),
+    );
+  }
+
+  if (sort === "lastSeen") {
+    filtered.sort((a, b) =>
+      order === "Za"
+        ? new Date(b.lastSeen) - new Date(a.lastSeen)
+        : new Date(a.lastSeen) - new Date(b.lastSeen),
+    );
+  }
+
+  if (sort === "indicator") {
+    filtered.sort((a, b) =>
+      order === "Za"
+        ? b.value.localeCompare(a.value)
+        : a.value.localeCompare(b.value),
     );
   }
 
@@ -156,7 +174,7 @@ app.delete("/api/indicators/:id", (req, res) => {
   const indicatorIndex = indicators.findIndex((i) => i.id === req.params.id);
   indicators.splice(indicatorIndex, 1);
   res.sendStatus(204);
-})
+});
 
 /**
  * PUT /api/indicators/:id
@@ -165,10 +183,9 @@ app.delete("/api/indicators/:id", (req, res) => {
  */
 app.put("/api/indicators", (req, res) => {
   const indicatorIndex = indicators.findIndex((i) => i.id === req.body.id);
-  indicators[indicatorIndex] = {...indicators[indicatorIndex], ...req.body};
+  indicators[indicatorIndex] = { ...indicators[indicatorIndex], ...req.body };
   res.status(200).json(indicators[indicatorIndex]);
-
-})
+});
 
 if (process.env.NODE_ENV !== "production") {
   app.listen(PORT, () => {

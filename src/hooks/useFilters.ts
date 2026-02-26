@@ -27,6 +27,8 @@ export interface Filters {
   type: string;
   page: number;
   limit: number;
+  sort?: string;
+  order?: Sorting;
 }
 
 export const useFilters = () => {
@@ -35,7 +37,6 @@ export const useFilters = () => {
     useState<PaginatedResponse<Indicator>>(INITIAL_INDICATORS);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-  const [sorting, setSorting] = useState<Sorting>(false);
   const [isSearch, setIsSearch] = useState<boolean>(false);
 
   useEffect(() => {
@@ -74,16 +75,11 @@ export const useFilters = () => {
     [filters, data],
   );
 
-  const handleSorting = useCallback(() => {
-    let sortedData = [...data.data];
-    if (sorting === "Az") {
-      sortedData.sort((a, b) => a.value.localeCompare(b.value));
-    } else {
-      sortedData.sort((a, b) => b.value.localeCompare(a.value));
-    }
-    setData({ ...data, data: sortedData });
-    setSorting(sorting === "Az" ? "Za" : "Az");
-  }, [data, sorting]);
+  const handleSorting = (event: React.MouseEvent<HTMLHeadingElement, MouseEvent>) => {
+    const { sortid } = event.currentTarget.dataset;
+    const order = filters.order === "Az" ? "Za" : "Az";
+    setFilters({ ...filters, sort: sortid, order });
+  };
 
   const clearFilters = () => {
     setFilters(INITIAL_FILTERS);

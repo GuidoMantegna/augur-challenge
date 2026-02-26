@@ -4,7 +4,7 @@ import { timeAgoHM, randomTagColor } from "../utils";
 const LoadingRow: React.FC = () => {
   return (
     <>
-      <td className="td-checkbox"></td>
+      {/* <td className="td-checkbox"></td> */}
       <td>
         <div className="w-full h-[20px] bg-[var(--border-default)] rounded animate-pulse"></div>
       </td>
@@ -30,7 +30,7 @@ const LoadingRow: React.FC = () => {
   );
 };
 interface TableRowProps extends Indicator {
-  selected: boolean;
+  // selected: boolean;
   loading: boolean;
 }
 const TableRow: React.FC<TableRowProps> = ({
@@ -41,19 +41,19 @@ const TableRow: React.FC<TableRowProps> = ({
   source,
   tags,
   lastSeen,
-  selected,
+  // selected,
   loading,
 }) => {
   if (loading) return <LoadingRow />;
   return (
     <>
-      <td className="td-checkbox">
+      {/* <td className="td-checkbox">
         <input
           type="checkbox"
           defaultChecked={selected}
           style={{ accentColor: "var(--augur-blue)" }}
         />
-      </td>
+      </td> */}
       <td className="td-indicator" data-testid="td-indicator">
         {value}
       </td>

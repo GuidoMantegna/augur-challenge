@@ -41,6 +41,12 @@ const Dashboard: React.FC = () => {
   };
   const { form, updateForm, handleSubmit, setForm } = useIndicators(closeModal);
 
+  const SORT_ICON = {
+    Az: "↑",
+    Za: "↓",
+    default: "↕",
+  }[filters?.order || "default"];
+
   return (
     <>
       {/* Toasts */}
@@ -139,22 +145,36 @@ const Dashboard: React.FC = () => {
                 <table className="data-table">
                   <thead>
                     <tr>
-                      <th style={{ width: "28px" }}>
+                      {/* <th style={{ width: "28px" }}>
                         <input
                           type="checkbox"
                           style={{ accentColor: "var(--augur-blue)" }}
                         />
-                      </th>
-                      <th onClick={handleSorting} aria-controls="sort">
-                        Indicator <span className="sort-icon">↕</span>
+                      </th> */}
+                      <th
+                        onClick={handleSorting}
+                        aria-controls="sort"
+                        data-sortid="indicator"
+                      >
+                        Indicator{" "}
+                        <span className="sort-icon">
+                          {filters?.sort === "indicator" ? SORT_ICON : "↕"}
+                        </span>
                       </th>
                       <th>Type</th>
                       <th>Severity</th>
                       <th>Confidence</th>
                       <th>Source</th>
                       <th>Tags</th>
-                      <th>
-                        Last Seen <span className="sort-icon">↓</span>
+                      <th
+                        onClick={handleSorting}
+                        aria-controls="sort"
+                        data-sortid="lastSeen"
+                      >
+                        Last Seen{" "}
+                        <span className="sort-icon">
+                          {filters?.sort === "lastSeen" ? SORT_ICON : "↕"}
+                        </span>
                       </th>
                     </tr>
                   </thead>
@@ -175,7 +195,7 @@ const Dashboard: React.FC = () => {
                         >
                           <TableRow
                             {...row}
-                            selected={details?.id === row.id}
+                            // selected={details?.id === row.id}
                             loading={indicatorsLoading}
                           />
                         </tr>
@@ -198,7 +218,7 @@ const Dashboard: React.FC = () => {
               className={`
                 detail-panel 
                 ${!details ? "translate-x-[100%]" : "translate-x-0"}
-                transition-transform duration-200 ease-in-out animate ease-in-out`}
+                transition-transform duration-150 ease-in-out animate ease-in-out`}
             >
               <div className="detail-header">
                 <h3>Indicator Details</h3>
