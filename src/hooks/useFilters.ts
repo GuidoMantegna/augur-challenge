@@ -86,6 +86,7 @@ export const useFilters = () => {
   };
 
   const fetchFilters = useCallback(async () => {
+    try {
     const data = await apiRequest({
       method: "get",
       url: "/api/indicators",
@@ -94,6 +95,9 @@ export const useFilters = () => {
       setError,
     });
     setData(data);
+    } catch (error) {
+      console.error("Error fetching filters:", error);
+    }
   }, [filters]);
 
   return {

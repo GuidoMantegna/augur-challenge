@@ -33,19 +33,27 @@ export const useIndicators = (cancel: () => void) => {
   const updateForm = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
-    setForm({
-      ...form,
+    setForm(prev => ({
+      ...prev,
       [e.target.name]:
         e.target.name === "tags"
           ? e.target.value.split(",").map((tag) => tag.trim())
           : e.target.value,
-    });
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, action: string) => {
     e.preventDefault();
-    if(["add", "edit"].includes(action)) await addIndicator(action);
-    if(action === "delete") await deleteIndicator();
+    try {
+      if(["add", "edit"].includes(action)) await addIndicator(action);
+      if(action === "delete") await deleteIndicator();
+    } catch (error) {
+      console.error("Error adding indicator:", error);
+      toast("Error adding indicator", {
+        type: "error",
+        toastId: "indicator-error",
+      });
+    }
     cancel();
     toast("Indicator successfully added", {
       type: "success",
@@ -86,7 +94,7 @@ export const useIndicators = (cancel: () => void) => {
   };
 
   const areFieldFull =
-    form.source && form.type && form.value && form.severity && form.tags.length;
+    !!(form.source && form.type && form.value && form.severity && form.tags.length);
 
   return {
     form,
